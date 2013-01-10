@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <!-- NOTE: various comments and unused configuration possibilities have been purged
+     from this file.  Please refer to http://wiki.apache.org/solr/SolrConfigXml,
+     as well as the default solrconfig file included with Solr -->
+
+  <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+
+  <luceneMatchVersion>LUCENE_40</luceneMatchVersion>
+
+  <lib dir="/usr/lib/solr/4.0.0/" />
+  
+  <dataDir>${solr.core1.data.dir:/data/bnf/data}</dataDir>
+
+  <indexConfig>
+<!-- from sw-solr   
+    <maxFieldLength>2147483647</maxFieldLength>
+    <writeLockTimeout>1000</writeLockTimeout>
+    <useCompoundFile>false</useCompoundFile>
+    <ramBufferSizeMB>128</ramBufferSizeMB>
+    <mergeFactor>10</mergeFactor>
+    <lockType>simple</lockType>
+    <unlockOnStartup>false</unlockOnStartup>
+    <reopenReaders>true</reopenReaders>
+    <deletionPolicy class="solr.SolrDeletionPolicy">
+      <str name="maxCommitsToKeep">1</str>
+      <str name="maxOptimizedCommitsToKeep">0</str>
+    </deletionPolicy>
+-->    
+  </indexConfig>
+
+  <!-- See docs re: autoCommit -->
+  <updateHandler class="solr.DirectUpdateHandler2" />
+
+  <query>
+    <maxBooleanClauses>1024</maxBooleanClauses>
+    <filterCache class="solr.FastLRUCache" size="512" initialSize="512" autowarmCount="0"/>
+    <queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0"/>
+    <documentCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0"/>
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+    <queryResultWindowSize>80</queryResultWindowSize>
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+    <useColdSearcher>true</useColdSearcher>
+    <maxWarmingSearchers>1</maxWarmingSearchers>
+
+    <!-- a newSearcher event is fired whenever a new searcher is being prepared
+         and there is a current searcher handling requests (aka registered).
+         It should only have the most common facets -->
+    <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <!-- default query for all objects, front page facets -->
+        <lst>
+          <int name="rows">0</int>
+          <str name="fl">score</str>
+          <bool name="facet">true</bool>
+          <int name="facet.mincount">1</int>
+          <str name="facet.field">abstract_ssim</str>
+          <str name="facet.field">abstract_displayLabel_ssim</str>
+          <str name="facet.field">abstract_type_ssim</str>
+          <str name="facet.field">abstract_shareable_ssim</str>
+          <str name="facet.field">abstract_altRepGroup_ssim</str>
+          <str name="facet.field">abstract_xlink_ssim</str>
+          <str name="facet.field">abstract_lang_ssim</str>
+          <str name="facet.field">abstract_xml_lang_ssim</str>
+          <str name="facet.field">abstract_script_ssim</str>
+          <str name="facet.field">abstract_transliteration_ssim</str>
+
+          <str name="facet.field">accessCondition_ssim</str>
+          <str name="facet.field">accessCondition_displayLabel_ssim</str>
+          <str name="facet.field">accessCondition_type_ssim</str>
+          <str name="facet.field">accessCondition_altRepGroup_ssim</str>
+          <str name="facet.field">accessCondition_xlink_ssim</str>
+          <str name="facet.field">accessCondition_lang_ssim</str>
+          <str name="facet.field">accessCondition_xml_lang_ssim</str>
+          <str name="facet.field">accessCondition_script_ssim</str>
+          <str name="facet.field">accessCondition_transliteration_ssim</str>
+
+          <str name="facet.field">classification_ssim</str>
+          <str name="facet.field">classification_displayLabel_ssim</str>
+          <str name="facet.field">classification_edition_ssim</str>
+          <str name="facet.field">classification_usage_ssim</str>
+          <str name="facet.field">classification_authority_ssim</str>
+          <str name="facet.field">classification_authorityURI_ssim</str>
+          <str name="facet.field">classification_valueURI_ssim</str>
+          <str name="facet.field">classification_altRepGroup_ssim</str>
+          <str name="facet.field">classification_lang_ssim</str>
+          <str name="facet.field">classification_xml_lang_ssim</str>
+          <str name="facet.field">classification_script_ssim</str>
+          <str name="facet.field">classification_transliteration_ssim</str>
+
+          <str name="facet.field">extension_ssim</str>
+          <str name="facet.field">extension_displayLabel_ssim</str>
+
+          <str name="facet.field">genre_ssim</str>
+          <str name="facet.field">genre_displayLabel_ssim</str>
+          <str name="facet.field">genre_type_ssim</str>
+          <str name="facet.field">genre_usage_ssim</str>
+          <str name="facet.field">genre_authority_ssim</str>
+          <str name="facet.field">genre_authorityURI_ssim</str>
+          <str name="facet.field">genre_valueURI_ssim</str>
+          <str name="facet.field">genre_altRepGroup_ssim</str>
+          <str name="facet.field">genre_lang_ssim</str>
+          <str name="facet.field">genre_xml_lang_ssim</str>
+          <str name="facet.field">genre_script_ssim</str>
+          <str name="facet.field">genre_transliteration_ssim</str>
+
+          <str name="facet.field">identifier_ssim</str>
+          <str name="facet.field">identifier_displayLabel_ssim</str>
+          <str name="facet.field">identifier_type_ssim</str>
+          <str name="facet.field">identifier_invalid_ssim</str>
+          <str name="facet.field">identifier_altRepGroup_ssim</str>
+          <str name="facet.field">identifier_lang_ssim</str>
+          <str name="facet.field">identifier_xml_lang_ssim</str>
+          <str name="facet.field">identifier_script_ssim</str>
+          <str name="facet.field">identifier_transliteration_ssim</str>
+
+          <str name="facet.field">language_ssim</str>
+          <str name="facet.field">language_usage_ssim</str>
+          <str name="facet.field">language_objectPart_ssim</str>
+          <str name="facet.field">language_altRepGroup_ssim</str>
+          <str name="facet.field">language_lang_ssim</str>
+          <str name="facet.field">language_xml_lang_ssim</str>
+          <str name="facet.field">language_script_ssim</str>
+          <str name="facet.field">language_transliteration_ssim</str>
+          <str name="facet.field">language_displayLabel_ssim</str>
+
+          <str name="facet.field">language_languageTerm_ssim</str>
+          <str name="facet.field">language_languageTerm_type_ssim</str>
+          <str name="facet.field">language_languageTerm_authority_ssim</str>
+          <str name="facet.field">language_languageTerm_authorityURI_ssim</str>
+          <str name="facet.field">language_languageTerm_valueURI_ssim</str>
+          <str name="facet.field">language_languageTerm_lang_ssim</str>
+          <str name="facet.field">language_languageTerm_xml_lang_ssim</str>
+          <str name="facet.field">language_languageTerm_script_ssim</str>
+          <str name="facet.field">language_languageTerm_transliteration_ssim</str>
+
+          <str name="facet.field">language_scriptTerm_ssim</str>
+          <str name="facet.field">language_scriptTerm_type_ssim</str>
+          <str name="facet.field">language_scriptTerm_authority_ssim</str>
+          <str name="facet.field">language_scriptTerm_authorityURI_ssim</str>
+          <str name="facet.field">language_scriptTerm_valueURI_ssim</str>
+          <str name="facet.field">language_scriptTerm_lang_ssim</str>
+          <str name="facet.field">language_scriptTerm_xml_lang_ssim</str>
+          <str name="facet.field">language_scriptTerm_script_ssim</str>
+          <str name="facet.field">language_scriptTerm_transliteration_ssim</str>
+
+          <str name="facet.field">location_ssim</str>
+          <str name="facet.field">location_altRepGroup_ssim</str>
+          <str name="facet.field">location_lang_ssim</str>
+          <str name="facet.field">location_xml_lang_ssim</str>
+          <str name="facet.field">location_script_ssim</str>
+          <str name="facet.field">location_transliteration_ssim</str>
+
+          <str name="facet.field">location_physicalLocation_ssim</str>
+          <str name="facet.field">location_physicalLocation_type_ssim</str>
+          <str name="facet.field">location_physicalLocation_authority_ssim</str>
+          <str name="facet.field">location_physicalLocation_authorityURI_ssim</str>
+          <str name="facet.field">location_physicalLocation_valueURI_ssim</str>
+          <str name="facet.field">location_physicalLocation_xlink_ssim</str>
+          <str name="facet.field">location_physicalLocation_lang_ssim</str>
+          <str name="facet.field">location_physicalLocation_xml_lang_ssim</str>
+          <str name="facet.field">location_physicalLocation_script_ssim</str>
+          <str name="facet.field">location_physicalLocation_transliteration_ssim</str>
+          <str name="facet.field">location_physicalLocation_displayLabel_ssim</str>
+
+          <str name="facet.field">location_shelfLocator_ssim</str>
+          <str name="facet.field">location_shelfLocator_lang_ssim</str>
+          <str name="facet.field">location_shelfLocator_xml_lang_ssim</str>
+          <str name="facet.field">location_shelfLocator_script_ssim</str>
+          <str name="facet.field">location_shelfLocator_transliteration_ssim</str>
+
+          <str name="facet.field">location_url_ssim</str>
+          <str name="facet.field">location_url_dateLastAccessed_ssim</str>
+          <str name="facet.field">location_url_note_ssim</str>
+          <str name="facet.field">location_url_access_ssim</str>
+          <str name="facet.field">location_url_usage_ssim</str>
+          <str name="facet.field">location_url_displayLabel_ssim</str>
+					<!-- lots of subsubelements for mods/location/holdingSimple ... and I don't care -->
+          <str name="facet.field">location_holdingSimple_ssim</str>
+          <str name="facet.field">location_holdingExternal_ssim</str>
+
+          <str name="facet.field">name_ssim</str>
+          <str name="facet.field">name_type_ssim</str>
+          <str name="facet.field">name_authority_ssim</str>
+          <str name="facet.field">name_authorityURI_ssim</str>
+          <str name="facet.field">name_valueURI_ssim</str>
+          <str name="facet.field">name_usage_ssim</str>
+          <str name="facet.field">name_nameTitleGroup_ssim</str>
+          <str name="facet.field">name_altRepGroup_ssim</str>
+          <str name="facet.field">name_xlink_ssim</str>
+          <str name="facet.field">name_ID_ssim</str>
+          <str name="facet.field">name_lang_ssim</str>
+          <str name="facet.field">name_xml_lang_ssim</str>
+          <str name="facet.field">name_script_ssim</str>
+          <str name="facet.field">name_transliteration_ssim</str>
+          <str name="facet.field">name_displayLabel_ssim</str>
+
+          <str name="facet.field">name_namePart_ssim</str>
+          <str name="facet.field">name_namePart_type_ssim</str>
+          <str name="facet.field">name_namePart_lang_ssim</str>
+          <str name="facet.field">name_namePart_xml_lang_ssim</str>
+          <str name="facet.field">name_namePart_script_ssim</str>
+          <str name="facet.field">name_namePart_transliteration_ssim</str>
+
+          <str name="facet.field">name_displayForm_ssim</str>
+          <str name="facet.field">name_displayForm_lang_ssim</str>
+          <str name="facet.field">name_displayForm_xml_lang_ssim</str>
+          <str name="facet.field">name_displayForm_script_ssim</str>
+          <str name="facet.field">name_displayForm_transliteration_ssim</str>
+
+          <str name="facet.field">name_affiliation_ssim</str>
+          <str name="facet.field">name_affiliation_lang_ssim</str>
+          <str name="facet.field">name_affiliation_xml_lang_ssim</str>
+          <str name="facet.field">name_affiliation_script_ssim</str>
+          <str name="facet.field">name_affiliation_transliteration_ssim</str>
+
+          <str name="facet.field">name_role_ssim</str>
+          <str name="facet.field">name_role_roleTerm_ssim</str>
+          <str name="facet.field">name_role_roleTerm_type_ssim</str>
+          <str name="facet.field">name_role_roleTerm_authority_ssim</str>
+          <str name="facet.field">name_role_roleTerm_authorityURI_ssim</str>
+          <str name="facet.field">name_role_roleTerm_valueURI_ssim</str>
+          <str name="facet.field">name_role_roleTerm_lang_ssim</str>
+          <str name="facet.field">name_role_roleTerm_xml_lang_ssim</str>
+          <str name="facet.field">name_role_roleTerm_script_ssim</str>
+          <str name="facet.field">name_role_roleTerm_transliteration_ssim</str>
+
+          <str name="facet.field">name_description_ssim</str>
+          <str name="facet.field">name_description_lang_ssim</str>
+          <str name="facet.field">name_description_xml_lang_ssim</str>
+          <str name="facet.field">name_description_script_ssim</str>
+          <str name="facet.field">name_description_transliteration_ssim</str>
+
+          <str name="facet.field">note_ssim</str>
+          <str name="facet.field">note_type_ssim</str>
+          <str name="facet.field">note_altRepGroup_ssim</str>
+          <str name="facet.field">note_xlink_ssim</str>
+          <str name="facet.field">note_ID_ssim</str>
+          <str name="facet.field">note_lang_ssim</str>
+          <str name="facet.field">note_xml_lang_ssim</str>
+          <str name="facet.field">note_script_ssim</str>
+          <str name="facet.field">note_transliteration_ssim</str>
+          <str name="facet.field">note_displayLabel_ssim</str>
+
+          <str name="facet.field">originInfo_ssim</str>
+          <str name="facet.field">originInfo_altRepGroup_ssim</str>
+          <str name="facet.field">originInfo_lang_ssim</str>
+          <str name="facet.field">originInfo_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_script_ssim</str>
+          <str name="facet.field">originInfo_transliteration_ssim</str>
+          <str name="facet.field">originInfo_displayLabel_ssim</str>
+
+          <str name="facet.field">originInfo_place_ssim</str>
+          <str name="facet.field">originInfo_place_supplied_ssim</str>
+
+          <str name="facet.field">originInfo_place_placeTerm_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_type_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_authority_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_authorityURI_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_valueURI_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_lang_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_script_ssim</str>
+          <str name="facet.field">originInfo_place_placeTerm_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_publisher_ssim</str>
+          <str name="facet.field">originInfo_publisher_supplied_ssim</str>
+          <str name="facet.field">originInfo_publisher_lang_ssim</str>
+          <str name="facet.field">originInfo_publisher_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_publisher_script_ssim</str>
+          <str name="facet.field">originInfo_publisher_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateIssued_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_point_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_lang_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_script_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateCreated_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_point_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_lang_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_script_ssim</str>
+          <str name="facet.field">originInfo_dateCreated_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateCaptured_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_point_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_lang_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_script_ssim</str>
+          <str name="facet.field">originInfo_dateCaptured_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateValid_ssim</str>
+          <str name="facet.field">originInfo_dateValid_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateValid_point_ssim</str>
+          <str name="facet.field">originInfo_dateValid_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateValid_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateValid_lang_ssim</str>
+          <str name="facet.field">originInfo_dateValid_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateValid_script_ssim</str>
+          <str name="facet.field">originInfo_dateIssued_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateModified_ssim</str>
+          <str name="facet.field">originInfo_dateModified_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateModified_point_ssim</str>
+          <str name="facet.field">originInfo_dateModified_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateModified_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateModified_lang_ssim</str>
+          <str name="facet.field">originInfo_dateModified_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateModified_script_ssim</str>
+          <str name="facet.field">originInfo_dateModified_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_copyrightDate_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_encoding_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_point_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_keyDate_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_qualifier_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_lang_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_script_ssim</str>
+          <str name="facet.field">originInfo_copyrightDate_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_dateOther_ssim</str>
+          <str name="facet.field">originInfo_dateOther_encoding_ssim</str>
+          <str name="facet.field">originInfo_dateOther_point_ssim</str>
+          <str name="facet.field">originInfo_dateOther_keyDate_ssim</str>
+          <str name="facet.field">originInfo_dateOther_qualifier_ssim</str>
+          <str name="facet.field">originInfo_dateOther_lang_ssim</str>
+          <str name="facet.field">originInfo_dateOther_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_dateOther_script_ssim</str>
+          <str name="facet.field">originInfo_dateOther_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_edition_ssim</str>
+          <str name="facet.field">originInfo_edition_supplied_ssim</str>
+          <str name="facet.field">originInfo_edition_lang_ssim</str>
+          <str name="facet.field">originInfo_edition_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_edition_script_ssim</str>
+          <str name="facet.field">originInfo_edition_transliteration_ssim</str>
+
+          <str name="facet.field">originInfo_issuance_ssim</str>
+
+          <str name="facet.field">originInfo_frequency_ssim</str>
+          <str name="facet.field">originInfo_frequency_authority_ssim</str>
+          <str name="facet.field">originInfo_frequency_authorityURI_ssim</str>
+          <str name="facet.field">originInfo_frequency_valueURI_ssim</str>
+          <str name="facet.field">originInfo_frequency_lang_ssim</str>
+          <str name="facet.field">originInfo_frequency_xml_lang_ssim</str>
+          <str name="facet.field">originInfo_frequency_script_ssim</str>
+          <str name="facet.field">originInfo_frequency_transliteration_ssim</str>
+
+          <str name="facet.field">part_ssim</str>
+          <str name="facet.field">part_type_ssim</str>
+          <str name="facet.field">part_order_ssim</str>
+          <str name="facet.field">part_altRepGroup_ssim</str>
+          <str name="facet.field">part_ID_ssim</str>
+          <str name="facet.field">part_lang_ssim</str>
+          <str name="facet.field">part_xml_lang_ssim</str>
+          <str name="facet.field">part_script_ssim</str>
+          <str name="facet.field">part_transliteration_ssim</str>
+          <str name="facet.field">part_displayLabel_ssim</str>
+
+          <str name="facet.field">part_detail_ssim</str>
+          <str name="facet.field">part_detail_type_ssim</str>
+          <str name="facet.field">part_detail_level_ssim</str>
+          <str name="facet.field">part_detail_lang_ssim</str>
+          <str name="facet.field">part_detail_xml_lang_ssim</str>
+          <str name="facet.field">part_detail_script_ssim</str>
+          <str name="facet.field">part_detail_transliteration_ssim</str>
+
+          <str name="facet.field">part_detail_number_ssim</str>
+          <str name="facet.field">part_detail_number_lang_ssim</str>
+          <str name="facet.field">part_detail_number_xml_lang_ssim</str>
+          <str name="facet.field">part_detail_number_script_ssim</str>
+          <str name="facet.field">part_detail_number_transliteration_ssim</str>
+
+          <str name="facet.field">part_detail_caption_ssim</str>
+          <str name="facet.field">part_detail_caption_lang_ssim</str>
+          <str name="facet.field">part_detail_caption_xml_lang_ssim</str>
+          <str name="facet.field">part_detail_caption_script_ssim</str>
+          <str name="facet.field">part_detail_caption_transliteration_ssim</str>
+
+          <str name="facet.field">part_detail_title_ssim</str>
+
+          <str name="facet.field">part_extent_ssim</str>
+          <str name="facet.field">part_extent_unit_ssim</str>
+
+          <str name="facet.field">part_extent_start_ssim</str>
+          <str name="facet.field">part_extent_start_lang_ssim</str>
+          <str name="facet.field">part_extent_start_xml_lang_ssim</str>
+          <str name="facet.field">part_extent_start_script_ssim</str>
+          <str name="facet.field">part_extent_start_transliteration_ssim</str>
+
+          <str name="facet.field">part_extent_end_ssim</str>
+          <str name="facet.field">part_extent_end_lang_ssim</str>
+          <str name="facet.field">part_extent_end_xml_lang_ssim</str>
+          <str name="facet.field">part_extent_end_script_ssim</str>
+          <str name="facet.field">part_extent_end_transliteration_ssim</str>
+
+          <str name="facet.field">part_extent_total_ssim</str>
+
+          <str name="facet.field">part_extent_list_ssim</str>
+          <str name="facet.field">part_extent_list_lang_ssim</str>
+          <str name="facet.field">part_extent_list_xml_lang_ssim</str>
+          <str name="facet.field">part_extent_list_script_ssim</str>
+          <str name="facet.field">part_extent_list_transliteration_ssim</str>
+
+          <str name="facet.field">part_date_ssim</str>
+          <str name="facet.field">part_date_encoding_ssim</str>
+          <str name="facet.field">part_date_point_ssim</str>
+          <str name="facet.field">part_date_qualifier_ssim</str>
+          <str name="facet.field">part_date_lang_ssim</str>
+          <str name="facet.field">part_date_xml_lang_ssim</str>
+          <str name="facet.field">part_date_script_ssim</str>
+          <str name="facet.field">part_date_transliteration_ssim</str>
+
+          <str name="facet.field">part_text_ssim</str>
+          <str name="facet.field">part_text_type_ssim</str>
+          <str name="facet.field">part_text_xlink_ssim</str>
+          <str name="facet.field">part_text_lang_ssim</str>
+          <str name="facet.field">part_text_xml_lang_ssim</str>
+          <str name="facet.field">part_text_script_ssim</str>
+          <str name="facet.field">part_text_transliteration_ssim</str>
+          <str name="facet.field">part_text_displayLabel_ssim</str>
+
+          <str name="facet.field">physicalDescription_ssim</str>
+          <str name="facet.field">physicalDescription_altRepGroup_ssim</str>
+          <str name="facet.field">physicalDescription_lang_ssim</str>
+          <str name="facet.field">physicalDescription_xml_lang_ssim</str>
+          <str name="facet.field">physicalDescription_script_ssim</str>
+          <str name="facet.field">physicalDescription_transliteration_ssim</str>
+          <str name="facet.field">physicalDescription_displayLabel_ssim</str>
+
+          <str name="facet.field">physicalDescription_form_ssim</str>
+          <str name="facet.field">physicalDescription_form_type_ssim</str>
+          <str name="facet.field">physicalDescription_form_authority_ssim</str>
+          <str name="facet.field">physicalDescription_form_authorityURI_ssim</str>
+          <str name="facet.field">physicalDescription_form_valueURI_ssim</str>
+          <str name="facet.field">physicalDescription_form_lang_ssim</str>
+          <str name="facet.field">physicalDescription_form_xml_lang_ssim</str>
+          <str name="facet.field">physicalDescription_form_script_ssim</str>
+          <str name="facet.field">physicalDescription_form_transliteration_ssim</str>
+
+          <str name="facet.field">physicalDescription_reformattingQuality_ssim</str>
+
+          <str name="facet.field">physicalDescription_internetMediaType_ssim</str>
+          <str name="facet.field">physicalDescription_internetMediaType_lang_ssim</str>
+          <str name="facet.field">physicalDescription_internetMediaType_xml_lang_ssim</str>
+          <str name="facet.field">physicalDescription_internetMediaType_script_ssim</str>
+          <str name="facet.field">physicalDescription_internetMediaType_transliteration_ssim</str>
+
+          <str name="facet.field">physicalDescription_extent_ssim</str>
+          <str name="facet.field">physicalDescription_extent_supplied_ssim</str>
+          <str name="facet.field">physicalDescription_extent_lang_ssim</str>
+          <str name="facet.field">physicalDescription_extent_xml_lang_ssim</str>
+          <str name="facet.field">physicalDescription_extent_script_ssim</str>
+          <str name="facet.field">physicalDescription_extent_transliteration_ssim</str>
+
+          <str name="facet.field">physicalDescription_digitalOrigin_ssim</str>
+
+          <str name="facet.field">physicalDescription_note_ssim</str>
+          <str name="facet.field">physicalDescription_note_type_ssim</str>
+          <str name="facet.field">physicalDescription_note_displayLabel_ssim</str>
+          <str name="facet.field">physicalDescription_note_ID_ssim</str>
+          <str name="facet.field">physicalDescription_note_lang_ssim</str>
+          <str name="facet.field">physicalDescription_note_xml_lang_ssim</str>
+          <str name="facet.field">physicalDescription_note_script_ssim</str>
+          <str name="facet.field">physicalDescription_extent_transliteration_ssim</str>
+
+					<!-- record info -->
+					
+					<!-- relatedItem -->
+
+					<!-- subject -->
+          <str name="facet.field">titleInfo_ssim</str>
+          <str name="facet.field">titleInfo_type_ssim</str>
+          <str name="facet.field">titleInfo_authority_ssim</str>
+          <str name="facet.field">titleInfo_authorityURI_ssim</str>
+          <str name="facet.field">titleInfo_valueURI_ssim</str>
+          <str name="facet.field">titleInfo_usage_ssim</str>
+          <str name="facet.field">titleInfo_supplied_ssim</str>
+          <str name="facet.field">titleInfo_nameTitleGroup_ssim</str>
+          <str name="facet.field">titleInfo_altRepGroup_ssim</str>
+          <str name="facet.field">titleInfo_xlink_ssim</str>
+          <str name="facet.field">titleInfo_ID_ssim</str>
+          <str name="facet.field">titleInfo_lang_ssim</str>
+          <str name="facet.field">titleInfo_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_script_ssim</str>
+          <str name="facet.field">titleInfo_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_displayLabel_ssim</str>
+
+
+
+          <str name="facet.field">tableOfContents_ssim</str>
+          <str name="facet.field">tableOfContents_type_ssim</str>
+          <str name="facet.field">tableOfContents_shareable_ssim</str>
+          <str name="facet.field">tableOfContents_altRepGroup_ssim</str>
+          <str name="facet.field">tableOfContents_xlink_ssim</str>
+          <str name="facet.field">tableOfContents_lang_ssim</str>
+          <str name="facet.field">tableOfContents_xml_lang_ssim</str>
+          <str name="facet.field">tableOfContents_script_ssim</str>
+          <str name="facet.field">tableOfContents_transliteration_ssim</str>
+          <str name="facet.field">tableOfContents_displayLabel_ssim</str>
+
+          <str name="facet.field">targetAudience_ssim</str>
+          <str name="facet.field">targetAudience_authority_ssim</str>
+          <str name="facet.field">targetAudience_authorityURI_ssim</str>
+          <str name="facet.field">targetAudience_valueURI_ssim</str>
+          <str name="facet.field">targetAudience_altRepGroup_ssim</str>
+          <str name="facet.field">targetAudience_lang_ssim</str>
+          <str name="facet.field">targetAudience_xml_lang_ssim</str>
+          <str name="facet.field">targetAudience_script_ssim</str>
+          <str name="facet.field">targetAudience_transliteration_ssim</str>
+          <str name="facet.field">targetAudience_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_ssim</str>
+          <str name="facet.field">titleInfo_type_ssim</str>
+          <str name="facet.field">titleInfo_authority_ssim</str>
+          <str name="facet.field">titleInfo_authorityURI_ssim</str>
+          <str name="facet.field">titleInfo_valueURI_ssim</str>
+          <str name="facet.field">titleInfo_usage_ssim</str>
+          <str name="facet.field">titleInfo_supplied_ssim</str>
+          <str name="facet.field">titleInfo_nameTitleGroup_ssim</str>
+          <str name="facet.field">titleInfo_altRepGroup_ssim</str>
+          <str name="facet.field">titleInfo_xlink_ssim</str>
+          <str name="facet.field">titleInfo_ID_ssim</str>
+          <str name="facet.field">titleInfo_lang_ssim</str>
+          <str name="facet.field">titleInfo_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_script_ssim</str>
+          <str name="facet.field">titleInfo_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_title_ssim</str>
+          <str name="facet.field">titleInfo_title_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_title_script_ssim</str>
+          <str name="facet.field">titleInfo_title_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_title_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_subTitle_ssim</str>
+          <str name="facet.field">titleInfo_subTitle_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_subTitle_script_ssim</str>
+          <str name="facet.field">titleInfo_subTitle_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_subTitle_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_partNumber_ssim</str>
+          <str name="facet.field">titleInfo_partNumber_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_partNumber_script_ssim</str>
+          <str name="facet.field">titleInfo_partNumber_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_partNumber_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_partName_ssim</str>
+          <str name="facet.field">titleInfo_partName_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_partName_script_ssim</str>
+          <str name="facet.field">titleInfo_partName_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_partName_displayLabel_ssim</str>
+
+          <str name="facet.field">titleInfo_nonSort_ssim</str>
+          <str name="facet.field">titleInfo_nonSort_xml_lang_ssim</str>
+          <str name="facet.field">titleInfo_nonSort_script_ssim</str>
+          <str name="facet.field">titleInfo_nonSort_transliteration_ssim</str>
+          <str name="facet.field">titleInfo_nonSort_displayLabel_ssim</str>
+
+          <str name="facet.field">typeOfResource_ssim</str>
+          <str name="facet.field">typeOfResource_collection_ssim</str>
+          <str name="facet.field">typeOfResource_manuscript_ssim</str>
+          <str name="facet.field">typeOfResource_usage_ssim</str>
+          <str name="facet.field">typeOfResource_altRepGroup_ssim</str>
+          <str name="facet.field">typeOfResource_displayLabel_ssim</str>
+        </lst>
+        <!-- single object query to populate filter and fieldValue cache -->
+        <lst>
+          <str name="q">id:ns351vc7243_volume</str>
+          <str name="qt">standard</str>
+          <int name="rows">0</int>
+          <str name="fl">score</str>
+          <bool name="facet">true</bool>
+          <int name="facet.mincount">1</int>
+          <int name="facet.limit">30</int>
+        </lst>
+      </arr>
+    </listener>
+
+    <!-- a firstSearcher event is fired whenever a new searcher is being
+         prepared but there is no current registered searcher to handle
+         requests or to gain autowarming data from. ("fast warmup") -->
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <!-- default query for all objects, front page facets -->
+        <lst>
+          <int name="rows">0</int>
+          <str name="fl">score</str>
+          <bool name="facet">true</bool>
+          <int name="facet.mincount">1</int>
+          <int name="facet.limit">30</int>
+        </lst>
+        <!-- single object query to populate filter and fieldValue cache -->
+        <lst>
+          <str name="q">id:ns351vc7243_volume</str>
+          <str name="qt">standard</str>
+          <int name="rows">0</int>
+          <str name="fl">score</str>
+          <bool name="facet">true</bool>
+          <int name="facet.mincount">1</int>
+          <int name="facet.limit">30</int>
+        </lst>
+      </arr>
+    </listener>
+  </query>
+
+  <!-- Let the dispatch filter handler /select?qt=XXX -->
+  <requestDispatcher handleSelect="true" >
+    <!--Make sure your system has some authentication before enabling remote streaming!  -->
+    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" />
+    <httpCaching lastModifiedFrom="openTime" etagSeed="Solr" />
+  </requestDispatcher>
+
+  <!-- for most searches, including Blacklight's pulldown menu for the single search box
+       Usage:   q=terms anywhere
+                q={!qf=$qf_title pf=$pf_title}a book title
+                q={!qf=$qf_author pf=$pf_author}author name
+                q=yer_callnum&df=callnum_search&defType=lucene&q.op=AND
+       and so on -->
+  <requestHandler name="search" class="solr.SearchHandler" default="true">
+    <lst name="defaults">
+      <str name="defType">edismax</str>
+      <str name="echoParams">explicit</str>
+      <str name="sort">score desc</str>
+      <int name="rows">20</int>
+      <str name="q.alt">*:*</str>
+      <str name="mm">6&lt;-1 6&lt;90%</str>
+      <int name="qs">1</int>
+      <int name="ps">0</int>
+      <float name="tie">0.01</float>
+      <str name="qf">
+        id
+				all_text_ti
+      </str>
+      <str name="pf">
+        all_text_ti^20
+      </str>
+
+      <str name="fl">score, *</str>
+      
+      <bool name="facet">true</bool>
+      <int name="facet.mincount">1</int>
+      <int name="facet.limit">21</int>
+      <str name="facet.field">collection_si</str>
+    </lst>
+  </requestHandler>
+
+  <!-- single document requests; use id=666 instead of q=id:666 -->
+  <requestHandler name="document" class="solr.SearchHandler" >
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="fl">*</str>
+      <int name="rows">1</int>
+      <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
+    </lst>
+  </requestHandler>
+
+  <!-- used to get consecutive terms for browsing -->
+  <searchComponent name="termsComp" class="solr.TermsComponent"/>
+  <requestHandler name="/alphaTerms" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <bool name="terms">true</bool>
+      <bool name="terms.lower.incl">true</bool>
+    </lst>
+    <arr name="components">
+      <str>termsComp</str>
+    </arr>
+  </requestHandler>
+
+  <!-- basic defType=lucene request handler -->
+  <requestHandler name="standard" class="solr.SearchHandler" >
+    <lst name="defaults">
+      <str name="defType">lucene</str>
+      <str name="echoParams">explicit</str>
+      <str name="df">all_text_ti</str>
+      <str name="q.op">AND</str>
+      <str name="sort">score desc</str>
+      <int name="facet.mincount">1</int>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" startup="lazy">
+    <!-- Enables a transaction log, currently used for real-time get.
+         "dir" - the target directory for transaction logs, defaults to the
+         solr data directory.  -->
+    <updateLog>
+      <str name="dir">${solr.core1.data.dir:}:/data/frda/data</str>
+    </updateLog>
+  </requestHandler>
+  <requestHandler name="/update/javabin" class="solr.BinaryUpdateRequestHandler" startup="lazy">
+    <!-- Enables a transaction log, currently used for real-time get.
+         "dir" - the target directory for transaction logs, defaults to the
+         solr data directory.  -->
+    <updateLog>
+      <str name="dir">${solr.core1.data.dir:}:/data/frda/data</str>
+    </updateLog>
+  </requestHandler>
+  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />  
+  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+    <lst name="invariants">
+      <str name="q">ping test query</str>
+      <str name="qt">search</str>
+    </lst>
+  </requestHandler>
+  <requestHandler name="/get" class="solr.RealTimeGetHandler">
+    <lst name="defaults">
+      <str name="omitHeader">true</str>
+    </lst>
+  </requestHandler>
+  <admin>
+    <defaultQuery>admin test query</defaultQuery>
+  </admin>
+
+</config>
