@@ -22,15 +22,7 @@ describe XmlSolrDocBuilder do
     
     it "should create an entry for the element name symbol, value all the text descendants of the element" do
       ng_el = Nokogiri::XML('<e>v</e>').root.xpath('/e').first
-      @xsdb.doc_hash_from_element(ng_el).should include(:e => 'v')
-    end
-    it "should include the values of the element children in its value, separated by space" do
-      ng_doc = Nokogiri::XML('<e>
-                                <e1>v1</e1>
-                                <e2>v2</e2>
-                              </e>')
-      ng_el = ng_doc.root.xpath('/e').first
-      @xsdb.doc_hash_from_element(ng_el).should include(:e => 'v1 v2')
+      @xsdb.doc_hash_from_element(ng_el).should include(:e => ['v'])
     end
     it "should not create an entry for an empty element with no attributes" do
       ng_el = Nokogiri::XML('<e></e>').root.xpath('/e').first
@@ -44,12 +36,12 @@ describe XmlSolrDocBuilder do
     end
     it "should have an entry for each attribute on an element" do
       ng_el = Nokogiri::XML('<e at1="a1" at2="a2">v1</e>').root.xpath('/e').first
-      @xsdb.doc_hash_from_element(ng_el).should include(:e_at1 => 'a1')
-      @xsdb.doc_hash_from_element(ng_el).should include(:e_at2 => 'a2')
+      @xsdb.doc_hash_from_element(ng_el).should include(:e_at1 => ['a1'])
+      @xsdb.doc_hash_from_element(ng_el).should include(:e_at2 => ['a2'])
     end
     it "should include namespace prefix in the Hash key symbol" do
       ng_el = Nokogiri::XML('<e xml:lang="zurg">v1</e>').root.xpath('/e').first
-      @xsdb.doc_hash_from_element(ng_el).should include(:e_xml_lang => 'zurg')
+      @xsdb.doc_hash_from_element(ng_el).should include(:e_xml_lang => ['zurg'])
     end
     it "should not create an entry for an empty attribute" do
       ng_el = Nokogiri::XML('<e at1="">v1</e>').root.xpath('/e').first
@@ -60,11 +52,34 @@ describe XmlSolrDocBuilder do
       ng_el = ng_doc.root.xpath('/e').first
       @xsdb.doc_hash_from_element(ng_el).should_not include(:e_at1)
     end
-    it "should create an entry for each subelement" do
-      pending "to be implemented"
-    end
-    
-  end
+    context "element children" do
+      before(:all) do
+        ng_doc = Nokogiri::XML('<e>
+                                  <e1>v1</e1>
+                                  <e2>v2</e2>
+                                  <e2>v3</e2>
+                                </e>')
+        @ng_el = ng_doc.root.xpath('/e').first
+        @hash = @xsdb.doc_hash_from_element(@ng_el)
+      end
+      it "should include the values of the element children in its value, separated by space" do
+        @hash.should include(:e => ['v1 v2 v3'])
+      end
+      it "should create an entry for each subelement" do
+        @hash.should include(:e_e1 => ['v1'])
+        @hash.should include(:e_e2 => ['v2', 'v3'])
+      end
+      it "should have all attribute values across multiple children" do
+        ng_doc = Nokogiri::XML('<e>
+                                  <e1>v1</e1>
+                                  <e2 at2="a2">v2</e2>
+                                  <e2 at2="a3">v3</e2>
+                                </e>')
+        ng_el = ng_doc.root.xpath('/e').first
+        @xsdb.doc_hash_from_element(ng_el).should include(:e_e2_at2 => ['a2', 'a3'])
+      end
+    end    
+  end # doc_hash_from_element
   
 
 end

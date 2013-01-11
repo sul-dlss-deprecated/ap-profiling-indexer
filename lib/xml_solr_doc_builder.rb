@@ -24,23 +24,35 @@ class XmlSolrDocBuilder
     
   # Create Hash representation of Solr fields for this element and its attribute and element children.
   # @param [Nokogiri::XML::Element] ng_el
+  # @param [String] key_prefix a string containing the ancestor element names, e.g. 'name_role_' 
   # @return [Hash<Symbol, Array<String>>] Hash representation of the Solr fields for this element
-  def doc_hash_from_element ng_el
-    el_name = ng_el.name
+  def doc_hash_from_element ng_el, key_prefix = nil
+    el_name = key_prefix ? key_prefix + ng_el.name : ng_el.name
     hash = {}
-    # field for element text content  (FIXME: cdata vs text?)
+    # entry for element text content
     el_text = ng_el.text.gsub(/\s+/,' ').strip
-    hash[el_name.to_sym] = el_text unless el_text.empty?
-    # field for each element attribute
+    key = el_name.to_sym
+    unless el_text.empty?
+      hash[key] ? hash[key] << el_text : hash[key] = [el_text]
+    end
+    # entry for each element attribute
     ng_el.attribute_nodes.each { |an|  
       at_text = an.text.strip
-      if an.namespace
-        hash["#{el_name}_#{an.namespace.prefix}_#{an.name}".to_sym] = at_text  unless at_text.empty?
-      else
-        hash["#{el_name}_#{an.name}".to_sym] = at_text  unless at_text.empty?
+      unless at_text.empty?
+        if an.namespace
+          key = "#{el_name}_#{an.namespace.prefix}_#{an.name}".to_sym
+        else
+          key = "#{el_name}_#{an.name}".to_sym
+        end
+        hash[key] ? hash[key] << at_text : hash[key] = [at_text]
       end
     }
     # recurse for subelements
+    ng_el.element_children.each { |en|
+      hash.merge!(doc_hash_from_element(en, "#{el_name}_")) { |k, oldval, newval|
+        oldval.concat(newval)
+      }
+    }
     hash
   end
     
