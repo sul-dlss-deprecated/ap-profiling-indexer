@@ -7,14 +7,23 @@ describe XmlSolrDocBuilder do
   end
   
   context "doc_hash" do
-    it "all_text_ti field should have all the text content of the document" do
-      pending "to be implemented"
+    before(:all) do
+      ng_doc = Nokogiri::XML('<e>
+                                <e1>v1</e1>
+                                <e2>v2</e2>
+                                <e2>v3</e2>
+                              </e>')
+      @hash = @xsdb.doc_hash(ng_doc)
     end
-    it "should have a field for each top level element" do
-      pending "to be implemented"
+    it "should have an entry for each top level element" do
+      @hash.should include(:e_e1)
+      @hash.should include(:e_e2)
     end
-    it "should have a field value for each occurrence of a repeated element" do
-      pending "to be implemented"
+    it "should have an entry value for each occurrence of a repeated element" do
+      @hash.should include(:e_e2 => ['v2', 'v3'])
+    end
+    it "should have an entry for the root element " do
+      @hash.should include(:e)
     end
   end
   

@@ -3,13 +3,6 @@ require 'logger'
 # Class to build the Hash representing a Solr document for a particular Nokogiri XML document
 class XmlSolrDocBuilder
 
-  attr_reader :logger
-
-  # @param [Logger] logger for indexing messages
-  def initialize(logger = Logger.new(STDOUT))
-    @logger = logger
-  end
-  
   # for each element in this nokogiri document, create key-value pairs:
   #   element_name => text value of all element children
   #   for each attribute of element:
