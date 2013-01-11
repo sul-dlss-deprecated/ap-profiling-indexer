@@ -16,8 +16,6 @@ describe SolrDocBuilder do
   context "doc_hash" do
     before(:all) do
       @ng_mods_xml = Nokogiri::XML("<mods #{@ns_decl}><note>hi</note></mods>")
-      cmd_xml = "<contentMetadata type='image' objectId='#{@fake_druid}'></contentMetadata>"
-      @ng_pub_xml = Nokogiri::XML("<publicObject id='druid#{@fake_druid}'>#{cmd_xml}</publicObject>")
     end
     before(:each) do
       @hdor_client = double
@@ -27,19 +25,23 @@ describe SolrDocBuilder do
     it "id field should be set to druid" do
       @doc_hash[:id].should == @fake_druid
     end
-    it "should have a druid field" do
-      @doc_hash[:druid].should == @fake_druid
+    it "all_text_ti field should have all the text content of the document" do
+      pending "to be implemented"
     end
-    it "should have the full MODS in the modsxml field" do
-      @doc_hash[:modsxml].should be_equivalent_to @mods_xml
-    end 
+    it "should have a field for each top level element" do
+      pending "to be implemented"
+    end
+    it "should have a field value for each occurrence of a repeated element" do
+      pending "to be implemented"
+    end
+
     it "should call doc_hash_from_mods to populate hash fields from MODS" do
       sdb = SolrDocBuilder.new(@fake_druid, @hdor_client, nil)
       sdb.should_receive(:doc_hash_from_mods)
       sdb.doc_hash
     end
   end
-  
+    
   context "doc_hash_from_mods" do
     before(:each) do
       @hdor_client = double()

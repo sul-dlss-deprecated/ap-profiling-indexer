@@ -26,9 +26,7 @@ class SolrDocBuilder
   # @return [Hash] Hash representing the Solr document
   def doc_hash
     doc_hash = {
-      :id => @druid, 
-      :druid => @druid, 
-      :modsxml => "#{@smods_rec.to_xml}",
+      :id => @druid
     }
     
     doc_hash.merge!(doc_hash_from_mods) if doc_hash_from_mods
@@ -37,8 +35,7 @@ class SolrDocBuilder
 
     doc_hash
   end
-  
-  
+    
   # Create a Hash representing a Solr doc, with all MODS related fields populated.
   # @return [Hash] Hash representing the Solr document
   def doc_hash_from_mods
