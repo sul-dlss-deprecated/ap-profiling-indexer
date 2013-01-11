@@ -10,8 +10,10 @@ class XmlSolrDocBuilder
   #   for each element child of element, the same as above, preceded by parent el
   #      parent_el_name_child_el_name => text value of all child element children ...
   # @param [Nokogiri::XML::Document] ng_doc 
+  # @param [String] key_suffix a string containing a suffix to put on the hash keys; default is '_ssim'
   # @return [Hash<Symbol, Array<String>>] Hash representation of the Solr fields
-  def doc_hash(ng_doc)
+  def doc_hash(ng_doc, key_suffix = '_ssim')
+    @key_suffix = key_suffix
     doc_hash_from_element ng_doc.root
   end
     
@@ -24,7 +26,7 @@ class XmlSolrDocBuilder
     hash = {}
     # entry for element text content
     el_text = ng_el.text.gsub(/\s+/,' ').strip
-    key = el_name.to_sym
+    key = "#{el_name}#{@key_suffix}".to_sym
     unless el_text.empty?
       hash[key] ? hash[key] << el_text : hash[key] = [el_text]
     end
@@ -33,9 +35,9 @@ class XmlSolrDocBuilder
       at_text = an.text.strip
       unless at_text.empty?
         if an.namespace
-          key = "#{el_name}_#{an.namespace.prefix}_#{an.name}".to_sym
+          key = "#{el_name}_#{an.namespace.prefix}_#{an.name}#{@key_suffix}".to_sym
         else
-          key = "#{el_name}_#{an.name}".to_sym
+          key = "#{el_name}_#{an.name}#{@key_suffix}".to_sym
         end
         hash[key] ? hash[key] << at_text : hash[key] = [at_text]
       end
