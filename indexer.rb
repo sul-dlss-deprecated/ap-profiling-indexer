@@ -6,7 +6,6 @@ require 'logger'
 
 # local files
 require 'solr_doc_builder'
-require 'xml_solr_doc_builder'
 
 # Base class to harvest from DOR via harvestdor gem
 class Indexer

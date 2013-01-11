@@ -2,6 +2,7 @@ require 'logger'
 
 require 'harvestdor'
 require 'stanford-mods'
+require 'xml_solr_doc_builder'
 
 # Class to build the Hash representing a Solr document for a particular druid
 class SolrDocBuilder
@@ -29,55 +30,23 @@ class SolrDocBuilder
       :id => @druid
     }
     
-    doc_hash.merge!(doc_hash_from_mods) if doc_hash_from_mods
-    
-    # TODO:  verify:  all searchworks fields per sw_index.properties and  schema.xml
-
-    doc_hash
-  end
-    
-  # Create a Hash representing a Solr doc, with all MODS related fields populated.
-  # @return [Hash] Hash representing the Solr document
-  def doc_hash_from_mods
-    doc_hash = { 
+    xsdb = XmlSolrDocBuilder.new
+    xml_hash = xsdb.doc_hash(@smods_rec.mods_ng_xml)
+    unless xml_hash.empty?
+      doc_hash[:all_text_ti] = xml_hash[:mods_ssim].first if xml_hash[:mods_ssim]
       
-      # title fields
-      :title_245a_search => @smods_rec.sw_short_title,
-      :title_245_search => @smods_rec.sw_full_title,
-      :title_variant_search => @smods_rec.sw_addl_titles,
-      :title_sort => @smods_rec.sw_sort_title,
-      :title_245a_display => @smods_rec.sw_short_title,
-      :title_display => @smods_rec.sw_full_title,
-      :title_full_display => @smods_rec.sw_full_title,
-      
-      # author fields
-      :author_1xx_search => @smods_rec.sw_main_author,
-      :author_7xx_search => @smods_rec.sw_addl_authors,
-      :author_person_facet => @smods_rec.sw_person_authors,
-      :author_other_facet => @smods_rec.sw_impersonal_authors,
-      :author_sort => @smods_rec.sw_sort_author,
-      :author_corp_display => @smods_rec.sw_corporate_authors,
-      :author_meeting_display => @smods_rec.sw_meeting_authors,
-      :author_person_display => @smods_rec.sw_person_authors,
-      :author_person_full_display => @smods_rec.sw_person_authors,
-      
-      :language => @smods_rec.sw_language_facet,
-      :physical =>  @smods_rec.term_values([:physical_description, :extent]),
-      :summary_search => @smods_rec.term_values(:abstract),
-      :toc_search => @smods_rec.term_values(:tableOfContents),
-      :url_suppl => @smods_rec.term_values([:related_item, :location, :url]),
-
-      # is access_condition_display still needed?
-      :access_condition_display => @smods_rec.term_values(:accessCondition),
-      # remaining: go through all MODS elements (per MODS spec, not wiki doc)
-    }
-    
-    # all_search
+      xml_hash.keys.each { |k|  
+        if k != :mods_ssim
+          # remove mods_ prefix from field names
+          doc_hash[k.to_s.sub(/^mods_/, '').to_sym] = xml_hash[k]
+        end
+      }
+    end
     
     doc_hash
   end
-  
-  
+
+  # TODO: move this method to indexer;  initialize should have druid and mods_ng_xml as args
   # return the MODS for the druid as a Stanford::Mods::Record object
   # @return [Stanford::Mods::Record] created from the MODS xml for the druid
   def smods_rec

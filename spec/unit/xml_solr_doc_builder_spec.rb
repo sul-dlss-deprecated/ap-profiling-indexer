@@ -31,7 +31,6 @@ describe XmlSolrDocBuilder do
   end
   
   context "doc_hash_from_element" do
-    
     it "should create an entry for the element name symbol, value all the text descendants of the element" do
       ng_el = Nokogiri::XML('<e>v</e>').root.xpath('/e').first
       @xsdb.doc_hash_from_element(ng_el).should include(:e_ssim => ['v'])
