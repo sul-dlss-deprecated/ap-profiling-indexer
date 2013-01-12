@@ -34,6 +34,7 @@ class Indexer
       solr_client.add(solr_doc(id))
       # update DOR object's workflow datastream??   for harvest?  for indexing?
     }
+    solr_client.commit
   end
   
   # return Array of druids contained in the OAI harvest indicated by OAI params in yml configuration file

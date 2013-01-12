@@ -4,10 +4,10 @@ require 'rsolr'
 describe Indexer do
   
   before(:all) do
-    config_yml_path = File.join(File.dirname(__FILE__), "..", "config", "bnf.yml")
-    @indexer = Indexer.new(config_yml_path)
+    @config_yml_path = File.join(File.dirname(__FILE__), "..", "config", "bnf.yml")
+    @indexer = Indexer.new(@config_yml_path)
     require 'yaml'
-    @yaml = YAML.load_file(config_yml_path)
+    @yaml = YAML.load_file(@config_yml_path)
     @hdor_client = @indexer.send(:harvestdor_client)
     @fake_druid = 'oo000oo0000'
   end
@@ -25,15 +25,27 @@ describe Indexer do
   end
   
   context "harvest_and_index" do
-    it "should call druids and then call :add on rsolr connection" do
-      doc_hash = {
+    before(:all) do
+      @doc_hash = {
         :id => @fake_druid,
         :field => 'val'
       }
-      @indexer.stub(:solr_doc).and_return(doc_hash)
+    end
+    it "should call druids and then call :add on rsolr connection" do
+      @indexer.stub(:solr_doc).and_return(@doc_hash)
       @hdor_client.should_receive(:druids_via_oai).and_return([@fake_druid])
-      @indexer.solr_client.should_receive(:add).with(doc_hash)
+      @indexer.solr_client.should_receive(:add).with(@doc_hash)
+      @indexer.solr_client.should_receive(:commit)
       @indexer.harvest_and_index
+    end
+    it "should only call :commit on rsolr connection once" do
+      indexer = Indexer.new(@config_yml_path)
+      hdor_client = indexer.send(:harvestdor_client)
+      hdor_client.should_receive(:druids_via_oai).and_return(['1', '2', '3'])
+      indexer.stub(:solr_doc).and_return(@doc_hash)
+      indexer.solr_client.should_receive(:add).with(@doc_hash).exactly(3).times
+      indexer.solr_client.should_receive(:commit).once
+      indexer.harvest_and_index
     end
   end
   

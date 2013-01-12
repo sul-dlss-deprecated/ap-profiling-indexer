@@ -36,7 +36,6 @@ describe SolrDocBuilder do
       @doc_hash.should include(:name_ssim => ['Shindy'])
       @doc_hash.should include(:name_namePart_ssim => ['Shindy'])
     end
-
     it "should call XmlSolrDocBuilder to populate hash fields from MODS" do
       XmlSolrDocBuilder.any_instance.should_receive(:doc_hash).and_return([])
       SolrDocBuilder.new(@fake_druid, @hdor_client, nil).doc_hash
