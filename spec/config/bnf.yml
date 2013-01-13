@@ -39,6 +39,5 @@ http_options:
 # ----------- SOLR index (that we're writing INTO) parameters ------------
 solr:
   url: http://sul-solr-test-a.stanford.edu:8983/solr/profiler
-  # SearchWorks commits take a long time to process. Don't time out.
-  read_timeout: 3600
-  open_timeout: 3600
+  read_timeout: 500
+  open_timeout: 500
