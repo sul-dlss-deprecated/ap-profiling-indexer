@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift('lib', File.expand_path(File.dirname(__FILE__)))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rubygems'
 begin
@@ -9,62 +10,10 @@ rescue LoadError
   require 'bundler/setup'
   require 'indexer'
 end
-require 'optparse'
-
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-
-DEFAULT_OPTIONS = {
-  log_dir: "logs"
-  log_name: "indexer.log"
-  purl: "http://purl.stanford.edu"
-  oai_repository_url: "https://dor-oaiprovider-prod.stanford.edu/oai"
-  # is_governed_by_hy787xj5878 --> Archives Parliamentaire
-  default_set: "is_governed_by_hy787xj5878"
-  solr: {:url => "http://sul-solr-test-a.stanford.edu:8983/solr/profiler"}
-}
-
-config_file_options = {}
-cmdline_options = {}
-dry_run = false
-
-optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: #{File.basename($0)} [options] [path_to_config_yml_file]"
-
-  opts.on('-c', '--config FILE', "Load configuration settings from FILE") do |filename|
-    config_file = filename
-    config_file_options = YAML.load(File.read(config_file))
-  end
-  
-  opts.on('-n', '--no-action', "Dry run; don't execute") do
-    dry_run = true
-  end
-  
-  opts.on('-u', '--solr-url URL', "Solr base URL with docs to be updated") do |solr_url|
-    (cmdline_options[:solr_url] ||= "") << solr_url
-  end
-
-  opts.on_tail('-h', '--help', "Show this help message") do
-    puts opts
-    exit
-  end
-end
-
-optparse.parse!
-
-
-options = DEFAULT_OPTIONS.merge(settings_file_options.as_hash).merge(config_file_options).merge(cmdline_options)
-puts "Solr url to receive updates: #{options[:solr_url]}"
-
-if dry_run
-  puts "Settings are: "
-  options.each { |key, val| puts "#{key} => #{val}\n"}
-  exit
-end
 
 config_yml_path = ARGV.pop
 if config_yml_path.nil?
   puts "** You must provide the full path to a config yml file **"
-  puts optparse
   exit
 end
   

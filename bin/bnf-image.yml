@@ -28,6 +28,7 @@ oai_repository_url: https://dor-oaiprovider-prod.stanford.edu/oai
 # default_set:  default set for harvest  (default: nil)
 #   can be overridden on calls to harvest_ids and harvest_records
 default_set: is_governed_by_ht275vw4351
+# is_governed_by_hy787xj5878 --> Archives Parliamentaire
 
 # Additional options to pass to Faraday http client (https://github.com/technoweenie/faraday)
 http_options:
@@ -38,6 +39,7 @@ http_options:
 
 # ----------- SOLR index (that we're writing INTO) parameters ------------
 solr:
-  url: http://sul-solr-test-a.stanford.edu:8983/solr/bnf
+#  url: https://sul-solr-test-a.stanford.edu:8983/solr/bnf
+  url: http://localhost:8080/solr/bnf
   read_timeout: 500
   open_timeout: 500
