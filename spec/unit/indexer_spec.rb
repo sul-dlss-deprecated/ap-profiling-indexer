@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'rsolr'
 
 describe Indexer do
   

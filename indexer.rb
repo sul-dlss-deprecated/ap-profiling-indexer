@@ -1,6 +1,7 @@
 # external gems
 require 'confstruct'
 require 'harvestdor'
+require 'rsolr'
 # stdlib
 require 'logger'
 
