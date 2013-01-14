@@ -30,7 +30,14 @@
   </indexConfig>
 
   <!-- See docs re: autoCommit -->
-  <updateHandler class="solr.DirectUpdateHandler2" />
+  <updateHandler class="solr.DirectUpdateHandler2">
+	  <!-- Enables a transaction log, currently used for real-time get.
+         "dir" - the target directory for transaction logs, defaults to the
+         solr data directory.  -->
+    <updateLog>
+      <str name="dir">${solr.core1.data.dir:/data/bnf/data}</str>
+    </updateLog>
+  </updateHandler>
 
   <query>
     <maxBooleanClauses>1024</maxBooleanClauses>
@@ -2778,22 +2785,7 @@
     </lst>
   </requestHandler>
 
-  <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" startup="lazy">
-    <!-- Enables a transaction log, currently used for real-time get.
-         "dir" - the target directory for transaction logs, defaults to the
-         solr data directory.  -->
-    <updateLog>
-      <str name="dir">${solr.core1.data.dir:/data/bnf/data}</str>
-    </updateLog>
-  </requestHandler>
-  <requestHandler name="/update/javabin" class="solr.BinaryUpdateRequestHandler" startup="lazy">
-    <!-- Enables a transaction log, currently used for real-time get.
-         "dir" - the target directory for transaction logs, defaults to the
-         solr data directory.  -->
-    <updateLog>
-      <str name="dir">${solr.core1.data.dir:/data/bnf/data}</str>
-    </updateLog>
-  </requestHandler>
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" startup="lazy" />
   <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />  
   <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
   <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
