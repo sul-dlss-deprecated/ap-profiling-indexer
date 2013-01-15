@@ -4,7 +4,7 @@
 log_dir: logs  
 
 # log_name: name of log file  (default: harvestdor.log)
-log_name: bnf-image.log
+log_name: bnf-images.log
 
 # purl: url for the DOR purl server (used to get ContentMetadata, etc.)
 purl: http://purl.stanford.edu
@@ -39,7 +39,11 @@ http_options:
 
 # ----------- SOLR index (that we're writing INTO) parameters ------------
 solr:
-#  url: https://sul-solr-test-a.stanford.edu:8983/solr/bnf
-  url: http://localhost:8080/solr/bnf
+  url: https://sul-solr-test-a.stanford.edu:8983/solr/mods_profiler
+#  url: http://localhost:8080/solr/mods_profiler
   read_timeout: 500
   open_timeout: 500
+
+# the value of the "collection" field in the Solr document (a way to query this OAI harvest only)
+# default is the default_set
+coll_fld_val: bnf_images

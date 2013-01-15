@@ -57,18 +57,44 @@ describe Indexer do
     
     before(:all) do
       @ns_decl = "xmlns='#{Mods::MODS_NS}'"
-      @mods_xml = "<mods #{@ns_decl}><note>hi</note></mods>"
+      @title = 'qervavdsaasdfa'
+      @ng_mods = Nokogiri::XML("<mods #{@ns_decl}><titleInfo><title>#{@title}</title></titleInfo></mods>")
     end
     before(:each) do
-      @title = 'qervavdsaasdfa'
-      ng_mods = Nokogiri::XML("<mods #{@ns_decl}><titleInfo><title>#{@title}</title></titleInfo></mods>")
-      @hdor_client.stub(:mods).with(@fake_druid).and_return(ng_mods)
+      @hdor_client.stub(:mods).with(@fake_druid).and_return(@ng_mods)
       @doc_hash = @indexer.solr_doc(@fake_druid)
     end
 
     it "should have fields populated from the MODS" do
-      @doc_hash[:title_245_search] = @title
-    end       
+      @doc_hash[:titleInfo_sim].should == [@title]
+    end
+    
+    context "collection field" do
+      it "should be populated from the yml if there is no overriding config value" do
+        indexer = Indexer.new(File.join(File.dirname(__FILE__), "..", "..", "config", "bnf-images.yml"))
+        hdor_client = indexer.send(:harvestdor_client)
+        hdor_client.stub(:mods).with(@fake_druid).and_return(@ng_mods)
+        doc_hash = indexer.solr_doc(@fake_druid)
+        doc_hash[:collection].should == 'bnf_images'
+      end
+      
+      it "should be the the default_set if there is no coll_fld_val in the config" do
+        indexer = Indexer.new(@config_yml_path)
+        hdor_client = indexer.send(:harvestdor_client)
+        hdor_client.stub(:mods).with(@fake_druid).and_return(@ng_mods)
+        doc_hash = indexer.solr_doc(@fake_druid)
+        doc_hash[:collection].should == 'is_governed_by_ht275vw4351'
+      end
+      
+      it "should be able to use options from the config" do
+        indexer = Indexer.new(@config_yml_path, Confstruct::Configuration.new(:coll_fld_val => 'this_coll') )
+        hdor_client = indexer.send(:harvestdor_client)
+        hdor_client.stub(:mods).with(@fake_druid).and_return(@ng_mods)
+        doc_hash = indexer.solr_doc(@fake_druid)
+        doc_hash[:collection].should == 'this_coll'
+      end
+    end
+    
   end # solr_doc
   
   it "solr_client should initialize the rsolr client using the options from the config" do

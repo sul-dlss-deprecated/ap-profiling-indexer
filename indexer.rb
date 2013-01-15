@@ -52,6 +52,7 @@ class Indexer
   def solr_doc druid
     sdb = SolrDocBuilder.new(druid, harvestdor_client, logger)
     doc_hash = sdb.doc_hash
+    doc_hash[:collection] = config.coll_fld_val ? config.coll_fld_val : config.default_set
 
     # add things from Indexer level class (info kept here for caching purposes)
     doc_hash

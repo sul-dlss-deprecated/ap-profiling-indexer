@@ -41,3 +41,6 @@ solr:
   url: http://sul-solr-test-a.stanford.edu:8983/solr/profiler
   read_timeout: 500
   open_timeout: 500
+  
+# the value of the "collection" field in the Solr document (a way to query this OAI harvest only)
+#coll_fld_val: bnf_images
