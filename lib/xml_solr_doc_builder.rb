@@ -10,9 +10,9 @@ class XmlSolrDocBuilder
   #   for each element child of element, the same as above, preceded by parent el
   #      parent_el_name_child_el_name => text value of all child element children ...
   # @param [Nokogiri::XML::Document] ng_doc 
-  # @param [String] key_suffix a string containing a suffix to put on the hash keys; default is '_ssim'
+  # @param [String] key_suffix a string containing a suffix to put on the hash keys; default is '_sim'
   # @return [Hash<Symbol, Array<String>>] Hash representation of the Solr fields
-  def doc_hash(ng_doc, key_suffix = '_ssim')
+  def doc_hash(ng_doc, key_suffix = '_sim')
     @key_suffix = key_suffix
     doc_hash_from_element ng_doc.root
   end

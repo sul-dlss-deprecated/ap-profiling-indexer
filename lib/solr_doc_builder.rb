@@ -33,10 +33,10 @@ class SolrDocBuilder
     xsdb = XmlSolrDocBuilder.new
     xml_hash = xsdb.doc_hash(@smods_rec.mods_ng_xml)
     unless xml_hash.empty?
-      doc_hash[:all_text_ti] = xml_hash[:mods_ssim].first if xml_hash[:mods_ssim]
+      doc_hash[:all_text_ti] = xml_hash[:mods_sim].first if xml_hash[:mods_sim]
       
       xml_hash.keys.each { |k|  
-        if k != :mods_ssim
+        if k != :mods_sim
           # remove mods_ prefix from field names
           doc_hash[k.to_s.sub(/^mods_/, '').to_sym] = xml_hash[k]
         end

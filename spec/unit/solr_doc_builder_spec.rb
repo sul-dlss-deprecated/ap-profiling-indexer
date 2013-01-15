@@ -26,15 +26,15 @@ describe SolrDocBuilder do
       @doc_hash.should include(:all_text_ti => 'hi Shindy')
     end
     it "should not have a field for the mods element" do
-      @doc_hash.should_not include(:mods_ssim)
+      @doc_hash.should_not include(:mods_sim)
     end
     it "should not have mods_ as prefix in field names" do
       @doc_hash.keys.each { |k| k.to_s.should_not =~ /$mods_.*/}
     end
     it "should have a field for each top level element" do
-      @doc_hash.should include(:note_ssim => ['hi'])
-      @doc_hash.should include(:name_ssim => ['Shindy'])
-      @doc_hash.should include(:name_namePart_ssim => ['Shindy'])
+      @doc_hash.should include(:note_sim => ['hi'])
+      @doc_hash.should include(:name_sim => ['Shindy'])
+      @doc_hash.should include(:name_namePart_sim => ['Shindy'])
     end
     it "should call XmlSolrDocBuilder to populate hash fields from MODS" do
       XmlSolrDocBuilder.any_instance.should_receive(:doc_hash).and_return([])
