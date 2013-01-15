@@ -10,7 +10,7 @@ To run:
 
  ./bin/indexer config/(your coll).yml
 
-I suggest you run it on harvestdor-dev for speed.  I ran off my laptop using ssh tunnel to get to sul-solr and it took 1 second per record.
+I suggest you run it on harvestdor-dev, as it is already set up to be able to harvest from the DOR OAI provider and to write to the sul-solr-test index.
 
 To view results:
   https://sul-solr-test-a/solr/bnf/select?q=collection:(yer_coll_fld_val)&rows=0&qt=standard
