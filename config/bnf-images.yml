@@ -1,4 +1,8 @@
-# Settings for Archives Parlementaires
+# Settings for BnF Images
+# You will want to copy this file and the following settings:
+# 1. log_name
+# 2. default_set
+# 3. coll_fld_val  (at bottom)
 
 # log_dir:  directory for log file  (default logs, relative to harvestdor gem path)
 log_dir: logs  
