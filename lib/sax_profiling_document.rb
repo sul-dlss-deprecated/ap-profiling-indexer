@@ -75,10 +75,12 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
       }
     end
     k = node.name.to_sym
-    if @doc_hash[k]
-      @doc_hash[k].concat(node.values)
-    else
-      @doc_hash[k] = node.values
+    unless node.values.empty?
+      if @doc_hash[k]
+        @doc_hash[k].concat(node.values) 
+      else
+        @doc_hash[k] = node.values
+      end
     end
   end
   
