@@ -6,18 +6,6 @@ require 'nokogiri'
 #   https://github.com/pauldix/sax-machine/blob/master/lib/sax-machine/sax_handler.rb
 class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   
-  attr_reader :doc_hash
-
-  NO_BUFFER = :no_buffer
-  
-  class StackNode < Struct.new(:name, :buffer, :values)
-    def initialize(name, buffer = NO_BUFFER, values = [])
-      self.name = name
-      self.buffer = buffer
-      self.values = values
-    end
-  end
-
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc
   # @param [String] volume the volume number (it might not be a strict number string, e.g. '71B')
@@ -45,12 +33,15 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   def characters(data)
     # current node
     node = @stack.last
-    chars = data.strip.gsub(/\s+/,' ')
-    if node.buffer == NO_BUFFER
-      node.buffer = chars.dup
-    else
-      node.buffer << chars
-    end
+    chars = data.strip.gsub(/\s+/, ' ')
+    # add chars to node buffer for stack
+    @stack.reverse.each { |snode|  
+      if snode.buffer == NO_BUFFER
+        snode.buffer = chars.dup
+      else
+        snode.buffer << ' ' + chars.dup
+      end
+    }
   end
   alias cdata_block characters
   
@@ -59,31 +50,61 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   #     [ ["xmlns:foo", "http://sample.net"], ["size", "large"] ]
   def start_element name, attributes
     @stack.push(StackNode.new(name))
-# TODO: append name on each element in stack
   end
   
   # @param [String] name the element tag
   def end_element name
     node = @stack.pop
-    text = node.buffer
+    text = node.buffer.gsub(/\s+/, ' ')
+    # add buffer to values for THIS node
     if text != NO_BUFFER
-      # for THIS node
       node.values << text
-      # for other nodes in the stack
-      @stack.each { |snode|
-        snode.values << text
-      }
     end
-    k = node.name.to_sym
     unless node.values.empty?
-      if @doc_hash[k]
-        @doc_hash[k].concat(node.values) 
-      else
-        @doc_hash[k] = node.values
-      end
+      # write to doc_hash for THIS node
+      add_to_doc_hash(node.name.to_sym, node.values)
+      # write to doc_hash for other nodes in the stack
+      suffix = "_#{node.name}"
+      stack_names.reverse.each { |sname| 
+        k = "#{sname}#{suffix}".to_sym
+        add_to_doc_hash(k, node.values)
+        suffix = "_#{sname}" + suffix
+      }
     end
   end
   
   # --------- Not part of the Nokogiri::XML::SAX::Document events -----------------
     
+  attr_reader :doc_hash
+
+  NO_BUFFER = :no_buffer
+  
+  class StackNode < Struct.new(:name, :buffer, :values)
+    def initialize(name, buffer = NO_BUFFER, values = [])
+      self.name = name
+      self.buffer = buffer
+      self.values = values
+    end
+  end
+  
+  # add the values to the doc_hash for the Solr field.
+  # @param [Symbol] key the Solr field name, as a symbol
+  # @param [Array<String>] values the values to add to the doc_hash for the key
+  def add_to_doc_hash(key, values)
+    if @doc_hash[key]
+      @doc_hash[key].concat(values.dup) 
+    else
+      @doc_hash[key] = values.dup
+    end
+  end
+
+  # @return [Array<String>] the names of the StackNodes currently in @stack, in Array order
+  def stack_names
+    names = []
+    @stack.each { |node|  
+      names << node.name
+    }
+    names
+  end
+
 end # ApTeiDocument class
