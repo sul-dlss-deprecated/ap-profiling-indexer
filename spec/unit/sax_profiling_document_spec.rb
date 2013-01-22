@@ -104,11 +104,6 @@ describe SaxProfilingDocument do
       @rsolr_client.should_receive(:add).with(hash_including(:e_at1_sim => ['a1'], :e_at2_sim => ['a2']))
       @parser.parse(x)
     end
-    it "should include namespace prefix in the Hash key symbol" do
-      x = '<e xml:lang="zurg">v1</e>'
-      @rsolr_client.should_receive(:add).with(hash_including(:e_xml_lang_sim => ['zurg']))
-      @parser.parse(x)
-    end
     it "should not create an entry for an empty attribute" do
       x = '<e at1="">v1</e>'
       @rsolr_client.should_receive(:add).with(hash_not_including(:e_at1_sim))
@@ -125,9 +120,47 @@ describe SaxProfilingDocument do
             <e2 at2="a2">v2</e2>
             <e2 at2="a3">v3</e2>
           </e>'
-      @rsolr_client.should_receive(:add).with(hash_including(:e_e2_at2_sim => ['a2', 'a3']))
+#      exp_flds = {:e2_at2_sim => ['a2', 'a3'], :e_e2_at2_sim => ['a2', 'a3']}
+      exp_flds = {:e2_at2_sim => ['a2', 'a3']}
+      @rsolr_client.should_receive(:add).with(hash_including(exp_flds))
       @parser.parse(x)
     end
   end # attributes
+  
+  context "namespaces" do
+    it "should work for root element with default namespace declaration" do
+      x = '<e a="a1" xmlns="foo">
+              <e1>v1</e1>
+           </e>'
+      @rsolr_client.should_receive(:add).with(hash_including(:e_a_sim => ['a1']))
+      @parser.parse(x)
+    end
+    it "should use namespace prefix for element name in doc_hash when there is a namespace declaration" do
+      x = '<xxx:e a="a1" xmlns:xxx="foo">
+              <xxx:e1>v1</xxx:e1>
+           </xxx:e>'
+      @rsolr_client.should_receive(:add).with(hash_including(:xxx_e_sim => ['v1'], :xxx_e1_sim => ['v1']))
+      @parser.parse(x)
+    end
+    it "should use correct namespace prefixes when there are multiple namespace declarations" do
+      x = '<xxx:e a="a1" xmlns:xxx="foo">
+              <yyy:e1 xmlns:yyy="bar">v1</yyy:e1>
+           </xxx:e>'
+      @rsolr_client.should_receive(:add).with(hash_including(:xxx_e_sim => ['v1'], :yyy_e1_sim => ['v1']))
+      @parser.parse(x)
+    end
+    it "a namespace is not an attribute" do
+      x = '<e a="a1" xmlns:boo="foo">
+              <e1>v1</e1>
+           </e>'
+      @rsolr_client.should_receive(:add).with(hash_not_including(:e_xmlns_boo_sim))
+      @parser.parse(x)
+    end
+    it "should include namespace prefix for an attribute in the doc_hash" do
+      x = '<e xml:lang="zurg">v1</e>'
+      @rsolr_client.should_receive(:add).with(hash_including(:e_xml_lang_sim => ['zurg']))
+      @parser.parse(x)
+    end
+  end
   
 end

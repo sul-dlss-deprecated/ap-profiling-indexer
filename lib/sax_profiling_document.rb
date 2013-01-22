@@ -49,7 +49,14 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   # @param [Array<String>] attributes an assoc list of namespaces and attributes, e.g.:
   #     [ ["xmlns:foo", "http://sample.net"], ["size", "large"] ]
   def start_element name, attributes
-    @stack.push(StackNode.new(name))
+    @stack.push(StackNode.new(name.sub(':', '_')))
+    attributes.each { |pair|  
+      att_name = pair[0].sub(':', '_')
+      att_val = pair[1]
+      unless att_name.start_with?('xmlns')
+        add_to_doc_hash("#{name}_#{att_name}", [att_val]) unless att_val.strip.empty?
+      end
+    }
   end
   
   # @param [String] name the element tag
