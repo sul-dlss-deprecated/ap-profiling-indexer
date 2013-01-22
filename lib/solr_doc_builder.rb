@@ -2,7 +2,7 @@ require 'logger'
 
 require 'harvestdor'
 require 'stanford-mods'
-require 'xml_solr_doc_builder'
+require 'sax_profiling_document'
 
 # Class to build the Hash representing a Solr document for a particular druid
 class SolrDocBuilder
@@ -30,7 +30,7 @@ class SolrDocBuilder
       :id => @druid
     }
     
-    xsdb = XmlSolrDocBuilder.new
+    xsdb = SaxProfilingDocument.new
     xml_hash = xsdb.doc_hash(@smods_rec.mods_ng_xml)
     unless xml_hash.empty?
       doc_hash[:all_text_ti] = xml_hash[:mods_sim].first if xml_hash[:mods_sim]
