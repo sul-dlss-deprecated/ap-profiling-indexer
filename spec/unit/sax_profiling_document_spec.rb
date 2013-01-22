@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "spec_helper"
 
 describe SaxProfilingDocument do
@@ -5,7 +6,8 @@ describe SaxProfilingDocument do
     @volume = '36'
     @druid = 'aa222bb4444'
     @rsolr_client = RSolr::Client.new('http://somewhere.org')
-    @atd = SaxProfilingDocument.new(@rsolr_client, @druid, @volume)
+    @logger = Logger.new(STDOUT)
+    @atd = SaxProfilingDocument.new(@rsolr_client, @druid, @volume, @logger)
     @parser = Nokogiri::XML::SAX::Parser.new(@atd)
   end
 
@@ -48,7 +50,7 @@ describe SaxProfilingDocument do
       @rsolr_client.should_receive(:add).with(hash_not_including(:e_sim))
       @parser.parse(x)
     end
-  end
+  end # elements - simple
   
   context "element children" do
     before(:all) do
@@ -89,7 +91,7 @@ describe SaxProfilingDocument do
       @rsolr_client.should_receive(:add).with(hash_including(exp_flds))
       @parser.parse(x)
     end
-  end 
+  end # element children
   
   context "attributes" do
     it "should have entries for attributes on the root element" do
@@ -161,6 +163,12 @@ describe SaxProfilingDocument do
       @rsolr_client.should_receive(:add).with(hash_including(:e_xml_lang_sim => ['zurg']))
       @parser.parse(x)
     end
+  end # namespaces
+  
+  it "should write warning messages to the log" do
+    @rsolr_client.should_receive(:add)
+    @logger.should_receive(:warn).at_least(1)
+    @parser.parse('<x y="<z/>"/>')
   end
   
 end

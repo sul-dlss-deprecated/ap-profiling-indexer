@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'logger'
 
 # Subclass of Nokogiri::XML::SAX::Document for 
 #  streaming parsing of xml for profiling purposes
@@ -9,10 +10,11 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc
   # @param [String] volume the volume number (it might not be a strict number string, e.g. '71B')
-  def initialize (rsolr_client, druid, volume)
+  def initialize (rsolr_client, druid, volume, logger)
     @rsolr_client = rsolr_client
     @druid = druid
     @volume = volume
+    @logger = logger
   end
   
   def start_document
@@ -79,6 +81,12 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
       }
     end
   end
+  
+  # @param [String] message contains the warning
+  def warning message
+    @logger.warn(message)
+  end
+  alias error warning
   
   # --------- Not part of the Nokogiri::XML::SAX::Document events -----------------
     
