@@ -55,18 +55,18 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   # @param [String] name the element tag
   def end_element name
     node = @stack.pop
-    text = node.buffer.gsub(/\s+/, ' ')
+    text = node.buffer
     # add buffer to values for THIS node
     if text != NO_BUFFER
-      node.values << text
+      node.values << text.strip.gsub(/\s+/, ' ') unless text.strip.gsub(/\s+/, ' ').size <= 1
     end
     unless node.values.empty?
       # write to doc_hash for THIS node
-      add_to_doc_hash(node.name.to_sym, node.values)
+      add_to_doc_hash(node.name, node.values)
       # write to doc_hash for other nodes in the stack
       suffix = "_#{node.name}"
       stack_names.reverse.each { |sname| 
-        k = "#{sname}#{suffix}".to_sym
+        k = "#{sname}#{suffix}"
         add_to_doc_hash(k, node.values)
         suffix = "_#{sname}" + suffix
       }
@@ -88,13 +88,14 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   end
   
   # add the values to the doc_hash for the Solr field.
-  # @param [Symbol] key the Solr field name, as a symbol
+  # @param [String] key the Solr field base name (no dynamic field suffix), as a String
   # @param [Array<String>] values the values to add to the doc_hash for the key
   def add_to_doc_hash(key, values)
-    if @doc_hash[key]
-      @doc_hash[key].concat(values.dup) 
+    k = "#{key}_sim".to_sym
+    if @doc_hash[k]
+      @doc_hash[k].concat(values.dup) 
     else
-      @doc_hash[key] = values.dup
+      @doc_hash[k] = values.dup
     end
   end
 
