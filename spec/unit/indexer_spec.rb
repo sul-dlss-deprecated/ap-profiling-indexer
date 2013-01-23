@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Indexer do
   
   before(:all) do
-    @config_yml_path = File.join(File.dirname(__FILE__), "..", "config", "bnf.yml")
+    @config_yml_path = File.join(File.dirname(__FILE__), "..", "config", "ap.yml")
     @indexer = Indexer.new(@config_yml_path)
     require 'yaml'
     @yaml = YAML.load_file(@config_yml_path)
