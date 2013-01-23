@@ -4,9 +4,10 @@ require 'harvestdor'
 require 'rsolr'
 # stdlib
 require 'logger'
+require 'open-uri'
 
 # local files
-require 'solr_doc_builder'
+require 'sax_profiling_document'
 
 # Base class to harvest from DOR via harvestdor gem
 class Indexer
@@ -31,9 +32,12 @@ class Indexer
   #   create a Solr document for each druid suitable for SearchWorks
   #   write the result to the SearchWorks Solr index
   def harvest_and_index
-    druids.each { |id|  
-      solr_client.add(solr_doc(id))
-      # update DOR object's workflow datastream??   for harvest?  for indexing?
+    druids.each { |druid|  
+      vol = volume(druid)
+      spd = SaxProfilingDocument.new(solr_client, druid, vol, logger)
+      parser = Nokogiri::XML::SAX::Parser.new(spd)
+      tei_xml = tei(druid)
+      parser.parse(tei_xml)
     }
     solr_client.commit
   end
@@ -43,25 +47,26 @@ class Indexer
   def druids
     @druids ||= harvestdor_client.druids_via_oai
   end
-
-  # Create a Solr doc, as a Hash, to be added to the SearchWorks Solr index.  
-  # Solr doc contents are based on the mods, contentMetadata, etc. for the druid
-  # @param [String] druid, e.g. ab123cd4567
-  # @param [Stanford::Mods::Record] MODS metadata as a Stanford::Mods::Record object
-  # @param [Hash] Hash representing the Solr document
-  def solr_doc druid
-    sdb = SolrDocBuilder.new(druid, harvestdor_client, logger)
-    doc_hash = sdb.doc_hash
-    doc_hash[:collection] = config.coll_fld_val ? config.coll_fld_val : config.default_set
-
-    # add things from Indexer level class (info kept here for caching purposes)
-    doc_hash
-  end
     
+  # get the AP volume "number" from the identityMetadata in the public_xml for the druid
+  # @param [String] druid we are seeking the volume number for this druid
+  # @return [String] the volume number for the druid, per the identity from the public_xml
+  def volume druid
+    im = harvestdor_client.identity_metadata(druid)
+    im.root.xpath('objectLabel').text
+  end
+  
+  # get the TEI for the AP volume via the digital stacks.  
+  # @return [String] the TEI as a String
+  def tei druid
+    url = "#{config.stacks}/file/druid:#{druid}/#{druid}.xml"
+    open(url)
+  end
+  
   def solr_client
     @solr_client ||= RSolr.connect(config.solr.to_hash)
   end
-  
+
   protected #---------------------------------------------------------------------
 
   def harvestdor_client

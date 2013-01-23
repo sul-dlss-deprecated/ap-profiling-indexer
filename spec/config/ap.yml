@@ -4,10 +4,13 @@
 log_dir: spec/test_logs  
 
 # log_name: name of log file  (default: harvestdor.log)
-log_name: bnf.log
+log_name: ap.log
 
-# purl: url for the DOR purl server (used to get ContentMetadata, etc.)
+# purl: base url for the DOR purl server (used to get ContentMetadata, etc.)
 purl: http://purl.stanford.edu
+
+# stacks: base url for the digital stacks (no trailing slash)
+stacks: https://stacks.stanford.edu
 
 # ---------- OAI harvesting parameters -----------
 
@@ -27,7 +30,7 @@ oai_repository_url: https://dor-oaiprovider-prod.stanford.edu/oai
 
 # default_set:  default set for harvest  (default: nil)
 #   can be overridden on calls to harvest_ids and harvest_records
-default_set: is_governed_by_ht275vw4351
+default_set: is_governed_by_hy787xj5878
 
 # Additional options to pass to Faraday http client (https://github.com/technoweenie/faraday)
 http_options:
@@ -38,10 +41,10 @@ http_options:
 
 # ----------- SOLR index (that we're writing INTO) parameters ------------
 solr:
-  url: https://sul-solr-test.stanford.edu/solr/mods_profiler
+  url: https://sul-solr-test.stanford.edu/solr/ap_profiler
 #  url: http://localhost:8080/solr/mods_profiler
   read_timeout: 500
   open_timeout: 500
   
 # the value of the "collection" field in the Solr document (a way to query this OAI harvest only)
-#coll_fld_val: bnf_images
+coll_fld_val: archives_parlementaires
