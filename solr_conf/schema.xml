@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="MODS Profiler" version="1.5">
+<schema name="SAX Profiler" version="1.5">
   <uniqueKey>id</uniqueKey>
   
   <fields>
