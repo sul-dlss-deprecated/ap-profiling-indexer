@@ -7,8 +7,6 @@ require 'logger'
 #   https://github.com/pauldix/sax-machine/blob/master/lib/sax-machine/sax_handler.rb
 class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   
-  @ignore_elements = []
-  
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc
   # @param [String] volume the volume number (it might not be a strict number string, e.g. '71B')
@@ -18,6 +16,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     @druid = druid
     @volume = volume
     @logger = logger
+    @ignore_elements = []
   end
   
   def start_document
