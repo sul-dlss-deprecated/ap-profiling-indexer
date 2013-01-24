@@ -18,6 +18,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..'))
 require 'indexer'
 require 'equivalent-xml'
 require 'sax_profiling_document'
+require 'ap_profiling_document'
 
 #RSpec.configure do |config|
 #end

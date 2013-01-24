@@ -7,9 +7,12 @@ require 'logger'
 #   https://github.com/pauldix/sax-machine/blob/master/lib/sax-machine/sax_handler.rb
 class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   
+  @ignore_elements = []
+  
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc
   # @param [String] volume the volume number (it might not be a strict number string, e.g. '71B')
+  # @param [Logger] logger to receive logged messages
   def initialize (rsolr_client, druid, volume, logger)
     @rsolr_client = rsolr_client
     @druid = druid
@@ -35,7 +38,11 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   def characters(data)
     # current node
     node = @stack.last
-    chars = data.strip.gsub(/\s+/, ' ')
+    if @ignore_elements.include?(node.name)
+      chars = ""
+    else
+      chars = data.strip.gsub(/\s+/, ' ')
+    end
     # add chars to node buffer for stack
     @stack.reverse.each { |snode|  
       if snode.buffer == NO_BUFFER
@@ -52,13 +59,15 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   #     [ ["xmlns:foo", "http://sample.net"], ["size", "large"] ]
   def start_element name, attributes
     @stack.push(StackNode.new(name.sub(':', '_')))
-    attributes.each { |pair|  
-      att_name = pair[0].sub(':', '_')
-      att_val = pair[1]
-      unless att_name.start_with?('xmlns')
-        add_to_doc_hash("#{name}_#{att_name}", [att_val]) unless att_val.strip.empty?
-      end
-    }
+    if !@ignore_elements.include?(name)
+      attributes.each { |pair|  
+        att_name = pair[0].sub(':', '_')
+        att_val = pair[1]
+        unless att_name.start_with?('xmlns')
+          add_to_doc_hash("#{name}_#{att_name}", [att_val]) unless att_val.strip.empty?
+        end
+      }
+    end
   end
   
   # @param [String] name the element tag
