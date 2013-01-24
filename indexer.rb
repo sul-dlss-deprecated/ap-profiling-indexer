@@ -8,7 +8,6 @@ require 'open-uri'
 
 # local files
 require 'sax_profiling_document'
-require 'ap_profiling_document'
 
 # Base class to harvest from DOR via harvestdor gem
 class Indexer

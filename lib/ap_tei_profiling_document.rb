@@ -1,9 +1,11 @@
 require 'nokogiri'
 require 'logger'
 
-# Subclass SaxProfilingDocument, which is a subclass of Nokogiri::XML::SAX::Document for 
+# Subclass of SaxProfilingDocument for Archives Parlementaire TEI documents
+# 
+# SaxProfilingDocument is a subclass of Nokogiri::XML::SAX::Document for 
 #  streaming parsing of xml for profiling purposes
-class ApProfilingDocument < SaxProfilingDocument
+class ApTeiProfilingDocument < SaxProfilingDocument
 
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc

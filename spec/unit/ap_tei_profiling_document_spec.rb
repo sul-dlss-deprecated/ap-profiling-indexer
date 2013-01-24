@@ -1,14 +1,14 @@
 # encoding: utf-8
 require "spec_helper"
 
-# tests specific to Archives Parlementaires profiling
-describe ApProfilingDocument do
+# tests specific to Archives Parlementaires TEI profiling
+describe ApTeiProfilingDocument do
   before(:all) do
     @volume = '36'
     @druid = 'aa222bb4444'
     @rsolr_client = RSolr::Client.new('http://somewhere.org')
     @logger = Logger.new(STDOUT)
-    @atd = ApProfilingDocument.new(@rsolr_client, @druid, @volume, @logger)
+    @atd = ApTeiProfilingDocument.new(@rsolr_client, @druid, @volume, @logger)
     @parser = Nokogiri::XML::SAX::Parser.new(@atd)
   end
 
