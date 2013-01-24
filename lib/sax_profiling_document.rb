@@ -3,7 +3,7 @@ require 'logger'
 
 # Subclass of Nokogiri::XML::SAX::Document for 
 #  streaming parsing of xml for profiling purposes
-# borrows heavily from sax-machine's sax_handler
+# borrows from sax-machine's sax_handler
 #   https://github.com/pauldix/sax-machine/blob/master/lib/sax-machine/sax_handler.rb
 class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   
