@@ -24,14 +24,14 @@ describe SaxProfilingDocument do
       @rsolr_client.should_receive(:add).with(hash_including(:volume_ssi => @volume))
       @parser.parse(@x)
     end
-    it "should have a druid field" do
-      @rsolr_client.should_receive(:add).with(hash_including(:druid => @druid))
+    it "should have an id field" do
+      @rsolr_client.should_receive(:add).with(hash_including(:id => @druid))
       @parser.parse(@x)
     end
   end
   
   it "should move on gracefully when the sax document to parse is empty" do
-    @rsolr_client.should_receive(:add).with(hash_including(:druid => @druid))
+    @rsolr_client.should_receive(:add).with(hash_including(:id => @druid))
     @parser.parse("<TEI.2/>")
   end
 

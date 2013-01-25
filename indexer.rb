@@ -44,7 +44,9 @@ class Indexer
       spd = SaxProfilingDocument.new(solr_client, druid, vol, collection, logger)
       parser = Nokogiri::XML::SAX::Parser.new(spd)
       tei_xml = tei(druid)
+      logger.info("About to parse #{druid} (volume #{vol})")
       parser.parse(tei_xml)
+      logger.info("Finished parsing #{druid}")
     }
     solr_client.commit
   end

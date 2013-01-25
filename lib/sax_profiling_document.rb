@@ -24,7 +24,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   def start_document
     @stack = []
     @doc_hash = {}
-    @doc_hash[:druid] = @druid
+    @doc_hash[:id] = @druid
     @doc_hash[:volume_ssi] = @volume
     @doc_hash[:collection] = @collection
   end

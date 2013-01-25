@@ -28,7 +28,7 @@ describe ApTeiProfilingDocument do
           </body>
         </text>
       </TEI.2>'
-      exp_hash = {:druid => @druid, :volume_ssi => @volume, :collection => @coll, :div1_type_sim => ['volume'], :div1_n_sim => ['48']}
+      exp_hash = {:id => @druid, :volume_ssi => @volume, :collection => @coll, :div1_type_sim => ['volume'], :div1_n_sim => ['48']}
       @rsolr_client.should_receive(:add).with(exp_hash)
       @parser.parse(x)
     end

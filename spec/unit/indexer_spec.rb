@@ -34,7 +34,7 @@ describe Indexer do
       hdor_client.should_receive(:identity_metadata).with('2').and_return(@im_ng)
       hdor_client.should_receive(:identity_metadata).with('3').and_return(@im_ng)
       OpenURI.should_receive(:open_uri).with(any_args).exactly(3).times.and_return('<TEI.2/>')
-      indexer.solr_client.should_receive(:add).with(hash_including(:druid, :volume_ssi => 'Volume 36')).exactly(3).times
+      indexer.solr_client.should_receive(:add).with(hash_including(:id, :volume_ssi => 'Volume 36')).exactly(3).times
       indexer.solr_client.should_receive(:commit).once
       indexer.harvest_and_index
     end
