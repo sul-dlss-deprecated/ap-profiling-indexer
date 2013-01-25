@@ -3,12 +3,31 @@ require "spec_helper"
 
 describe SaxProfilingDocument do
   before(:all) do
+    @coll = 'archives'
     @volume = '36'
     @druid = 'aa222bb4444'
     @rsolr_client = RSolr::Client.new('http://somewhere.org')
     @logger = Logger.new(STDOUT)
-    @atd = SaxProfilingDocument.new(@rsolr_client, @druid, @volume, @logger)
+    @atd = SaxProfilingDocument.new(@rsolr_client, @druid, @volume, @coll, @logger)
     @parser = Nokogiri::XML::SAX::Parser.new(@atd)
+  end
+  
+  context "data passed to .new" do
+    before(:all) do
+      @x = '<e />'
+    end
+    it "should have a collection field" do
+      @rsolr_client.should_receive(:add).with(hash_including(:collection => @coll))
+      @parser.parse(@x)
+    end
+    it "should have a volume_ssi field" do
+      @rsolr_client.should_receive(:add).with(hash_including(:volume_ssi => @volume))
+      @parser.parse(@x)
+    end
+    it "should have a druid field" do
+      @rsolr_client.should_receive(:add).with(hash_including(:druid => @druid))
+      @parser.parse(@x)
+    end
   end
 
   context "elements - simple" do

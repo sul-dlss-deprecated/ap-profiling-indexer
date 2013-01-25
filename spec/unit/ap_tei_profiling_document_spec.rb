@@ -4,11 +4,12 @@ require "spec_helper"
 # tests specific to Archives Parlementaires TEI profiling
 describe ApTeiProfilingDocument do
   before(:all) do
+    @coll = 'archives'
     @volume = '36'
     @druid = 'aa222bb4444'
     @rsolr_client = RSolr::Client.new('http://somewhere.org')
     @logger = Logger.new(STDOUT)
-    @atd = ApTeiProfilingDocument.new(@rsolr_client, @druid, @volume, @logger)
+    @atd = ApTeiProfilingDocument.new(@rsolr_client, @druid, @volume, @coll, @logger)
     @parser = Nokogiri::XML::SAX::Parser.new(@atd)
   end
 
@@ -27,7 +28,7 @@ describe ApTeiProfilingDocument do
           </body>
         </text>
       </TEI.2>'
-      exp_hash = {:druid => @druid, :volume_ssi => @volume, :div1_type_sim => ['volume'], :div1_n_sim => ['48']}
+      exp_hash = {:druid => @druid, :volume_ssi => @volume, :collection => @coll, :div1_type_sim => ['volume'], :div1_n_sim => ['48']}
       @rsolr_client.should_receive(:add).with(exp_hash)
       @parser.parse(x)
     end

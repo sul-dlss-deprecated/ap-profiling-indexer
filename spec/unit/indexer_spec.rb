@@ -58,6 +58,21 @@ describe Indexer do
     end
   end
   
+  context "collection" do
+    it "should be populated from the yml if there is no overriding config value" do
+      indexer = Indexer.new(File.join(File.dirname(__FILE__), "..", "..", "config", "ap.yml"))
+      indexer.collection.should == 'archives'
+    end
+    it "should be the the default_set if there is no coll_fld_val in the config" do
+      @indexer.collection.should == 'is_governed_by_hy787xj5878'
+    end
+    it "should be able to use options from the config" do
+      indexer = Indexer.new(@config_yml_path, Confstruct::Configuration.new(:coll_fld_val => 'this_coll') )
+      indexer.collection.should == 'this_coll'
+    end
+  end
+  
+  
   it "druids method should call druids_via_oai method on harvestdor_client" do
     @hdor_client.should_receive(:druids_via_oai)
     @indexer.druids

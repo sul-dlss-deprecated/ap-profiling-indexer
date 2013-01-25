@@ -10,11 +10,13 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   # @param [RSolr::Client] rsolr_client used to write the Solr documents as we build them
   # @param [String] druid the druid for the DOR object that contains this TEI doc
   # @param [String] volume the volume number (it might not be a strict number string, e.g. '71B')
+  # @param [String] collection the string to  (it might not be a strict number string, e.g. '71B')
   # @param [Logger] logger to receive logged messages
-  def initialize (rsolr_client, druid, volume, logger)
+  def initialize (rsolr_client, druid, volume, collection, logger)
     @rsolr_client = rsolr_client
     @druid = druid
     @volume = volume
+    @collection = collection
     @logger = logger
     @ignore_elements = []
   end
@@ -24,6 +26,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     @doc_hash = {}
     @doc_hash[:druid] = @druid
     @doc_hash[:volume_ssi] = @volume
+    @doc_hash[:collection] = @collection
   end
   
   def end_document

@@ -27,6 +27,13 @@ class Indexer
     @logger ||= load_logger(config.log_dir, config.log_name)
   end
   
+  # value for collection field
+  #   will be populated from config.coll_fld_val 
+  #   will be the config.default_set if there is no config.coll_fld_val
+  def collection
+    @collection = config.coll_fld_val ? config.coll_fld_val : config.default_set
+  end
+  
   # per this Indexer's config options 
   #  harvest the druids via OAI
   #   create a Solr document for each druid suitable for SearchWorks
@@ -34,7 +41,7 @@ class Indexer
   def harvest_and_index
     druids.each { |druid|  
       vol = volume(druid)
-      spd = SaxProfilingDocument.new(solr_client, druid, vol, logger)
+      spd = SaxProfilingDocument.new(solr_client, druid, vol, collection, logger)
       parser = Nokogiri::XML::SAX::Parser.new(spd)
       tei_xml = tei(druid)
       parser.parse(tei_xml)
