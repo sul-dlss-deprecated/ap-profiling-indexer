@@ -29,6 +29,11 @@ describe SaxProfilingDocument do
       @parser.parse(@x)
     end
   end
+  
+  it "should move on gracefully when the sax document to parse is empty" do
+    @rsolr_client.should_receive(:add).with(hash_including(:druid => @druid))
+    @parser.parse("<TEI.2/>")
+  end
 
   context "elements - simple" do
     before(:all) do

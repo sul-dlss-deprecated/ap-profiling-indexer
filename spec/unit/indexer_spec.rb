@@ -56,6 +56,14 @@ describe Indexer do
       OpenURI.should_receive(:open_uri).with(URI.parse(@url))
       @indexer.tei(@fake_druid)
     end
+    it "should write a message to the log if it doesn't find the tei" do
+      @indexer.logger.should_receive(:error).with('error while retrieving tei at https://stacks.stanford.edu/file/druid:oo000oo0000/oo000oo0000.xml -- 404 Not Found')
+      @indexer.tei(@fake_druid)
+    end
+    it "should return empty TEI if it doesn't find the tei" do
+      @indexer.logger.should_receive(:error)
+      @indexer.tei(@fake_druid).should == "<TEI.2/>"
+    end
   end
   
   context "collection" do
@@ -71,7 +79,6 @@ describe Indexer do
       indexer.collection.should == 'this_coll'
     end
   end
-  
   
   it "druids method should call druids_via_oai method on harvestdor_client" do
     @hdor_client.should_receive(:druids_via_oai)

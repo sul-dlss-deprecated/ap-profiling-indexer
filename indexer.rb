@@ -68,6 +68,9 @@ class Indexer
   def tei druid
     url = "#{config.stacks}/file/druid:#{druid}/#{druid}.xml"
     open(url)
+  rescue Exception => e
+    logger.error("error while retrieving tei at #{url} -- #{e.message}")
+    "<TEI.2/>"
   end
   
   def solr_client
