@@ -45,8 +45,8 @@ http_options:
 
 # ----------- SOLR index (that we're writing INTO) parameters ------------
 solr:
-  url: https://sul-solr-test.stanford.edu/solr/ap_profiler
-#  url: http://localhost:8080/solr/ap_profiler
+  url: https://sul-solr-test.stanford.edu/solr/sax_profiler
+#  url: http://localhost:8080/solr/sax_profiler
   read_timeout: 500
   open_timeout: 500
 
