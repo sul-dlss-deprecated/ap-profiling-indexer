@@ -26,7 +26,7 @@ describe Indexer do
   end
   
   context "harvest_and_index" do
-    it "should call :commit on rsolr connection once, and :add for each druid" do
+    it "should call :add and :commit for each druid" do
       indexer = Indexer.new(@config_yml_path)
       hdor_client = indexer.send(:harvestdor_client)
       hdor_client.should_receive(:druids_via_oai).and_return(['1', '2', '3'])
@@ -35,7 +35,7 @@ describe Indexer do
       hdor_client.should_receive(:identity_metadata).with('3').and_return(@im_ng)
       OpenURI.should_receive(:open_uri).with(any_args).exactly(3).times.and_return('<TEI.2/>')
       indexer.solr_client.should_receive(:add).with(hash_including(:id, :volume_ssi => 'Volume 36')).exactly(3).times
-      indexer.solr_client.should_receive(:commit).once
+      indexer.solr_client.should_receive(:commit).at_least(3).times
       indexer.harvest_and_index
     end
   end

@@ -118,24 +118,24 @@ describe ApTeiProfilingDocument do
 #      @rsolr_client.should_receive(:add).with(hash_including(:div2_sim => ['oui oui']))
 #      @parser.parse(@x1)
 #    end
-    it "should keep the text in <p> in the <front> section" do
-      x = '<TEI.2><text>
-            <front>
-             <div type="frontpiece">
-              <pb n="i" id="pz516hw4711_00_0001"/>
-              <p>ARCHIVES PARLEMENTAIRES </p>
-             </div>
-             <div type="hafltitle">
-              <pb n="iii" id="pz516hw4711_00_0003"/>
-              <p>ARCHIVES RARLEMENTAIRES DE 1787 A 1860 </p>
-              <p>something</p>
-             </div>
-            </front>
-          </text></TEI.2>'
-      p_text_retained = ['ARCHIVES PARLEMENTAIRES', 'ARCHIVES RARLEMENTAIRES DE 1787 A 1860', 'something']
-      @rsolr_client.should_receive(:add).with(hash_including(:p_sim => p_text_retained))
-      @parser.parse(x)
-    end
+#    it "should keep the text in <p> in the <front> section" do
+#      x = '<TEI.2><text>
+#            <front>
+#             <div type="frontpiece">
+#              <pb n="i" id="pz516hw4711_00_0001"/>
+#              <p>ARCHIVES PARLEMENTAIRES </p>
+#             </div>
+#             <div type="hafltitle">
+#              <pb n="iii" id="pz516hw4711_00_0003"/>
+#              <p>ARCHIVES RARLEMENTAIRES DE 1787 A 1860 </p>
+#              <p>something</p>
+#             </div>
+#            </front>
+#          </text></TEI.2>'
+#      p_text_retained = ['ARCHIVES PARLEMENTAIRES', 'ARCHIVES RARLEMENTAIRES DE 1787 A 1860', 'something']
+#      @rsolr_client.should_receive(:add).with(hash_including(:p_sim => p_text_retained))
+#      @parser.parse(x)
+#    end
   end
     
   context "back//div2[@type='contents']" do
