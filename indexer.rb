@@ -8,6 +8,7 @@ require 'open-uri'
 
 # local files
 require 'sax_profiling_document'
+require 'ap_tei_profiling_document'
 
 # Base class to harvest from DOR via harvestdor gem
 class Indexer
@@ -41,12 +42,15 @@ class Indexer
   def harvest_and_index
     druids.each { |druid|  
       vol = volume(druid)
-      spd = SaxProfilingDocument.new(solr_client, druid, vol, collection, logger)
+#      spd = SaxProfilingDocument.new(solr_client, druid, vol, collection, logger)
+      spd = ApTeiProfilingDocument.new(solr_client, druid, vol, collection, logger)
       parser = Nokogiri::XML::SAX::Parser.new(spd)
       tei_xml = tei(druid)
-      logger.info("About to parse #{druid} (volume #{vol})")
+      logger.info("About to parse #{druid} (#{vol})")
       parser.parse(tei_xml)
       logger.info("Finished parsing #{druid}")
+      solr_client.commit
+      logger.info("Sent commit to Solr")
     }
     solr_client.commit
   end
