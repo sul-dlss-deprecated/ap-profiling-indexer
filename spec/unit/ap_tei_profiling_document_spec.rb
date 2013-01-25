@@ -34,27 +34,69 @@ describe ApTeiProfilingDocument do
     end
   end
   
-  it "should ignore the <pb> element" do
-    x = '<TEI.2><text>
-          <front>
-            <div type="frontpiece">
-              <pb n="" id="ns351vc7243_00_0001"/> 
-              <p>ARCHIVES PARLEMENTAIRES </p>
-            </div>
-          </front>
-          <body>
-            <div1 type="volume" n="48">
-              <pb n="" id="ns351vc7243_00_0004"/>
-              <head>ARCHIVES PARLEMENTAIRES </head>
-              <div2 type="session">
-                <pb n="3" id="ns351vc7243_00_0006"/>
-                <p>ASSEMBLÉE NATIONALE LÉGISLATIVE. </p>
-              </div2>
-            </div1>
-          </body>
-        </text></TEI.2>'
-    @rsolr_client.should_receive(:add).with(hash_not_including(:pb_n_sim, :pb_id_sim, :pb_sim))
-    @parser.parse(x)
+  context "ignored elements" do
+    before(:all) do
+      @x = '<TEI.2><text>
+            <front>
+              <div type="frontpiece">
+                <pb n="" id="ns351vc7243_00_0001"/> 
+                <p>ARCHIVES PARLEMENTAIRES </p>
+              </div>
+            </front>
+            <body>
+              <div1 type="volume" n="48">
+                <pb n="" id="ns351vc7243_00_0004"/>
+                <head>ARCHIVES PARLEMENTAIRES </head>
+                <div2 type="session">
+                  <pb n="3" id="ns351vc7243_00_0006"/>
+                  <p>ASSEMBLÉE NATIONALE LÉGISLATIVE. </p>
+                </div2>
+              </div1>
+            </body>
+          </text></TEI.2>'
+    end
+    it "should ignore the <TEI.2 element>" do
+      @rsolr_client.should_receive(:add).with(hash_not_including(:"TEI.2_sim", :TEI_2_sim))
+      @parser.parse(@x)
+    end
+    it "should ignore the <text> element" do
+      @rsolr_client.should_receive(:add).with(hash_not_including(:text_sim, :"TEI.2_text_sim"))
+      @parser.parse(@x)
+    end
+    it "should ignore the <pb> element and its attributes" do
+      @rsolr_client.should_receive(:add).with(hash_not_including(:pb_n_sim, :pb_id_sim, :pb_sim))
+      @parser.parse(@x)
+    end
+    context "should ignore the immediate content of the <item> element" do
+      before(:all) do
+        @x = '<TEI.2><text>
+              <back>
+                <div1 type="volume" n="48">
+                  <pb n="" id="ns351vc7243_00_0719"/>
+                  <head>ARCHIVES PARLEMENTAIRES </head>
+                  <div2 type="contents">
+                    <head>TABLE CHRONOLOGIQUE DU TOME XLVIII </head>
+                    <list>
+                      <head>
+                        <date value="1792-08-01">SAMEDI 1 AOUT 1792</date>. Suite de la</head>
+                      <item>Pages. </item>
+                      <item>non non</item>
+                      <item>me oui</item>
+                    </list>
+                   </div2>
+                 </div1>
+               </back></text></TEI.2>'
+        @orig_vals = ['Pages.', 'non non', 'me oui']
+      end
+      it "should ignore the immediate text of an <item> element" do
+        @rsolr_client.should_receive(:add).with(hash_not_including(:item_sim))
+        @parser.parse(@x)
+      end
+      it "parents of <item> should also ignore <item> element" do
+        @rsolr_client.should_receive(:add).with(hash_not_including(:list_item_sim, :div2_list_head_item_sim))
+        @parser.parse(@x)
+      end      
+    end
   end
   
   context "<p> element" do

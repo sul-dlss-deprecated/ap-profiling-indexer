@@ -14,7 +14,8 @@ class ApTeiProfilingDocument < SaxProfilingDocument
   # @param [Logger] logger to receive logged messages
   def initialize (rsolr_client, druid, volume, collection, logger)
     super(rsolr_client, druid, volume, collection, logger)
-    @ignore_elements = ['pb', 'item', 'p'] 
+    @ignore_elements = ['pb', 'p', 'item'] 
+    @outer_elements_to_ignore = ['TEI.2', 'text']
   end
 
 end # ApTeiProfilingDocument

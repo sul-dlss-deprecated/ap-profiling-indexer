@@ -19,6 +19,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     @collection = collection
     @logger = logger
     @ignore_elements = []
+    @outer_elements_to_ignore = [] # outer elements we don't want in the solr_doc at all
   end
   
   def start_document
@@ -117,6 +118,9 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
   # @param [String] key the Solr field base name (no dynamic field suffix), as a String
   # @param [Array<String>] values the values to add to the doc_hash for the key
   def add_to_doc_hash(key, values)
+    @outer_elements_to_ignore.each { |el_name|  
+      return if key.start_with?(el_name)
+    }
     k = "#{key}_sim".to_sym
     if @doc_hash[k]
       @doc_hash[k].concat(values.dup) 
