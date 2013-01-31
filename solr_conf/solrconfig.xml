@@ -173,60 +173,22 @@
       <int name="facet.limit">21</int>
       <str name="facet.field">volume_ssi</str>
       <str name="facet.field">div1_type_sim</str>
-      <str name="facet.field">div1_n_sim</str>
       <str name="facet.field">div2_type_sim</str>
       <str name="facet.field">div2_n_sim</str>
       <str name="facet.field">div3_type_sim</str>
       <str name="facet.field">div3_n_sim</str>
       <str name="facet.field">div_type_sim</str>
 
-      <str name="facet.field">date_sim</str>
-      <str name="facet.field">date_value_sim</str>
-      <str name="facet.field">body_div1_head_date_sim</str>
-      <str name="facet.field">body_div1_p_date_sim</str>
-      <str name="facet.field">body_div1_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_head_date_sim</str>
-      <str name="facet.field">body_div1_div2_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_head_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_note_date_sim</str>
-      <str name="facet.field">teiHeader_fileDesc_publicationStmt_date_sim</str>
-      <str name="facet.field">front_div_p_date_sim</str>
-      <str name="facet.field">front_titlePage_docTitle_titlePart_date_sim</str>
-      <str name="facet.field">back_div1_head_date_sim</str>
-      <str name="facet.field">back_div1_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_list_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_p_date_sim</str>
-      <str name="facet.field">date_hi_sim</str>
-			<str name="facet.field">body_div1_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_date_hi_sim</str>
-			<str name="facet.field">front_div_p_date_hi_sim</str>
-			<str name="facet.field">front_titlePage_docTitle_titlePart_date_hi_sim</str>
-			<str name="facet.field">back_div1_div2_head_date_hi_sim</str>
-			<str name="facet.field">back_div1_div2_div3_p_date_hi_sim</str>
-      <str name="facet.field">date_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_date_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_head_date_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_date_date_sim</str>
-      <str name="facet.field">date_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_date_date_hi_sim</str>
+      <str name="facet.field">speaker_sim</str>
+      <str name="facet.field">body_div1_sp_speaker_sim</str>
+      <str name="facet.field">body_div1_div2_sp_speaker_sim</str>
+      <str name="facet.field">body_div1_div2_div3_sp_speaker_sim</str>
+      <str name="facet.field">back_div1_div2_div3_sp_speaker_sim</str>
+
+			<str name="facet.field">term_sim</str>
+			<str name="facet.field">body_div1_div2_p_term_sim</str>
+			<str name="facet.field">body_div1_div2_div3_p_term_sim</str>
+			<str name="facet.field">back_div1_div2_p_term_sim</str>
 
 			<str name="facet.field">head_sim</str>
 			<str name="facet.field">body_div1_head_sim</str>
@@ -239,27 +201,13 @@
 			<str name="facet.field">back_div1_div2_head_sim</str>
 			<str name="facet.field">back_div1_div2_list_head_sim</str>
 			<str name="facet.field">back_div1_div2_div3_head_sim</str>
-      <str name="facet.field">head_hi_sim</str>
-			<str name="facet.field">body_div1_div2_head_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_head_hi_sim</str>
-			<str name="facet.field">back_div1_head_hi_sim</str>
-			<str name="facet.field">back_div1_list_head_hi_sim</str>
-			<str name="facet.field">back_div1_div2_list_head_hi_sim</str>
-			<str name="facet.field">back_div1_div2_head_hi_sim</str>
-						
-			<str name="facet.field">hi_sim</str>
-			<str name="facet.field">hi_TEIform_sim</str>
-			<str name="facet.field">hi_rend_sim</str>
-			
-			<str name="facet.field">item_hi_sim</str>
-			<str name="facet.field">back_div1_list_item_hi_sim</str>
-			<str name="facet.field">back_div1_div2_list_item_hi_sim</str>
+
+      <str name="facet.field">date_value_sim</str>
 
 			<str name="facet.field">note_sim</str>
-			<str name="facet.field">note_date_sim</str>
-			<str name="facet.field">note_note_sim</str>
 			<str name="facet.field">note_place_sim</str>
 			<str name="facet.field">note_type_sim</str>
+			<str name="facet.field">note_note_sim</str>
 			<str name="facet.field">body_div1_note_sim</str>
 			<str name="facet.field">body_div1_sp_p_note_sim</str>
 			<str name="facet.field">body_div1_div2_note_sim</str>
@@ -276,59 +224,14 @@
 			<str name="facet.field">back_div1_div2_p_note_sim</str>
 			<str name="facet.field">back_div1_div2_div3_note_sim</str>
 			<str name="facet.field">back_div1_div2_div3_sp_p_note_sim</str>
-			<str name="facet.field">teiHeader_fileDesc_notesStmt_note_sim</str>
-			<str name="facet.field">note_hi_sim</str>
-			<str name="facet.field">body_div1_sp_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_note_hi_sim</str>
 
-      <str name="facet.field">p_sim</str>
-      <str name="facet.field">note_p_sim</str>
-      <str name="facet.field">body_div1_p_sim</str>
-      <str name="facet.field">body_div1_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_p_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_p_sim</str>
-      <str name="facet.field">front_div_p_sim</str>
-      <str name="facet.field">back_div1_p_sim</str>
-      <str name="facet.field">back_div1_div2_p_sim</str>
-      <str name="facet.field">back_div1_div2_div3_p_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_p_sim</str>
-      <str name="facet.field">p_hi_sim</str>
-			<str name="facet.field">body_div1_p_hi_sim</str>
-			<str name="facet.field">body_div1_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_note_p_hi_sim</str>
-			<str name="facet.field">front_div_p_hi_sim</str>
-			<str name="facet.field">back_div1_div2_p_hi_sim</str>
-			<str name="facet.field">back_div1_div2_div3_p_hi_sim</str>
+			<str name="facet.field">hi_sim</str>
+			<str name="facet.field">hi_TEIform_sim</str>
+			<str name="facet.field">hi_rend_sim</str>
 
 			<str name="facet.field">signed_sim</str>
 			<str name="facet.field">body_div1_div2_div3_signed_sim</str>
 
-      <str name="facet.field">speaker_sim</str>
-      <str name="facet.field">body_div1_sp_speaker_sim</str>
-      <str name="facet.field">body_div1_div2_sp_speaker_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_speaker_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_speaker_sim</str>
-			
-			<str name="facet.field">term_sim</str>
-			<str name="facet.field">body_div1_div2_p_term_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_term_sim</str>
-			<str name="facet.field">back_div1_div2_p_term_sim</str>
-			<str name="facet.field">term_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_term_hi_sim</str>
-			<str name="facet.field">back_div1_div2_p_term_hi_sim</str>
-			
 			<str name="facet.field">trailer_sim</str>
 			<str name="facet.field">body_div1_div2_div3_trailer_sim</str>
 			<str name="facet.field">back_div1_trailer_sim</str>
@@ -375,60 +278,22 @@
       <int name="facet.limit">21</int>
       <str name="facet.field">volume_ssi</str>
       <str name="facet.field">div1_type_sim</str>
-      <str name="facet.field">div1_n_sim</str>
       <str name="facet.field">div2_type_sim</str>
       <str name="facet.field">div2_n_sim</str>
       <str name="facet.field">div3_type_sim</str>
       <str name="facet.field">div3_n_sim</str>
       <str name="facet.field">div_type_sim</str>
 
-      <str name="facet.field">date_sim</str>
-      <str name="facet.field">date_value_sim</str>
-      <str name="facet.field">body_div1_head_date_sim</str>
-      <str name="facet.field">body_div1_p_date_sim</str>
-      <str name="facet.field">body_div1_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_head_date_sim</str>
-      <str name="facet.field">body_div1_div2_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_head_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_note_date_sim</str>
-      <str name="facet.field">teiHeader_fileDesc_publicationStmt_date_sim</str>
-      <str name="facet.field">front_div_p_date_sim</str>
-      <str name="facet.field">front_titlePage_docTitle_titlePart_date_sim</str>
-      <str name="facet.field">back_div1_head_date_sim</str>
-      <str name="facet.field">back_div1_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_list_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_head_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_p_date_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_p_date_sim</str>
-      <str name="facet.field">date_hi_sim</str>
-			<str name="facet.field">body_div1_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_head_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_date_hi_sim</str>
-			<str name="facet.field">front_div_p_date_hi_sim</str>
-			<str name="facet.field">front_titlePage_docTitle_titlePart_date_hi_sim</str>
-			<str name="facet.field">back_div1_div2_head_date_hi_sim</str>
-			<str name="facet.field">back_div1_div2_div3_p_date_hi_sim</str>
-      <str name="facet.field">date_date_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_date_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_head_date_date_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_date_date_sim</str>
-      <str name="facet.field">date_date_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_date_date_hi_sim</str>
+      <str name="facet.field">speaker_sim</str>
+      <str name="facet.field">body_div1_sp_speaker_sim</str>
+      <str name="facet.field">body_div1_div2_sp_speaker_sim</str>
+      <str name="facet.field">body_div1_div2_div3_sp_speaker_sim</str>
+      <str name="facet.field">back_div1_div2_div3_sp_speaker_sim</str>
+
+			<str name="facet.field">term_sim</str>
+			<str name="facet.field">body_div1_div2_p_term_sim</str>
+			<str name="facet.field">body_div1_div2_div3_p_term_sim</str>
+			<str name="facet.field">back_div1_div2_p_term_sim</str>
 
 			<str name="facet.field">head_sim</str>
 			<str name="facet.field">body_div1_head_sim</str>
@@ -441,24 +306,10 @@
 			<str name="facet.field">back_div1_div2_head_sim</str>
 			<str name="facet.field">back_div1_div2_list_head_sim</str>
 			<str name="facet.field">back_div1_div2_div3_head_sim</str>
-      <str name="facet.field">head_hi_sim</str>
-			<str name="facet.field">body_div1_div2_head_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_head_hi_sim</str>
-			<str name="facet.field">back_div1_head_hi_sim</str>
-			<str name="facet.field">back_div1_list_head_hi_sim</str>
-			<str name="facet.field">back_div1_div2_list_head_hi_sim</str>
-			<str name="facet.field">back_div1_div2_head_hi_sim</str>
-						
-			<str name="facet.field">hi_sim</str>
-			<str name="facet.field">hi_TEIform_sim</str>
-			<str name="facet.field">hi_rend_sim</str>
-			
-			<str name="facet.field">item_hi_sim</str>
-			<str name="facet.field">back_div1_list_item_hi_sim</str>
-			<str name="facet.field">back_div1_div2_list_item_hi_sim</str>
+
+      <str name="facet.field">date_value_sim</str>
 
 			<str name="facet.field">note_sim</str>
-			<str name="facet.field">note_date_sim</str>
 			<str name="facet.field">note_note_sim</str>
 			<str name="facet.field">note_place_sim</str>
 			<str name="facet.field">note_type_sim</str>
@@ -478,67 +329,22 @@
 			<str name="facet.field">back_div1_div2_p_note_sim</str>
 			<str name="facet.field">back_div1_div2_div3_note_sim</str>
 			<str name="facet.field">back_div1_div2_div3_sp_p_note_sim</str>
-			<str name="facet.field">teiHeader_fileDesc_notesStmt_note_sim</str>
-			<str name="facet.field">note_hi_sim</str>
-			<str name="facet.field">body_div1_sp_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_note_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_note_hi_sim</str>
 
-      <str name="facet.field">p_sim</str>
-      <str name="facet.field">note_p_sim</str>
-      <str name="facet.field">body_div1_p_sim</str>
-      <str name="facet.field">body_div1_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_p_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_sp_p_note_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_p_sim</str>
-      <str name="facet.field">body_div1_div2_div3_note_p_sim</str>
-      <str name="facet.field">front_div_p_sim</str>
-      <str name="facet.field">back_div1_p_sim</str>
-      <str name="facet.field">back_div1_div2_p_sim</str>
-      <str name="facet.field">back_div1_div2_div3_p_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_p_sim</str>
-      <str name="facet.field">p_hi_sim</str>
-			<str name="facet.field">body_div1_p_hi_sim</str>
-			<str name="facet.field">body_div1_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_sp_p_hi_sim</str>
-			<str name="facet.field">body_div1_div2_div3_note_p_hi_sim</str>
-			<str name="facet.field">front_div_p_hi_sim</str>
-			<str name="facet.field">back_div1_div2_p_hi_sim</str>
-			<str name="facet.field">back_div1_div2_div3_p_hi_sim</str>
+			<str name="facet.field">hi_sim</str>
+			<str name="facet.field">hi_TEIform_sim</str>
+			<str name="facet.field">hi_rend_sim</str>
 
 			<str name="facet.field">signed_sim</str>
 			<str name="facet.field">body_div1_div2_div3_signed_sim</str>
 
-      <str name="facet.field">speaker_sim</str>
-      <str name="facet.field">body_div1_sp_speaker_sim</str>
-      <str name="facet.field">body_div1_div2_sp_speaker_sim</str>
-      <str name="facet.field">body_div1_div2_div3_sp_speaker_sim</str>
-      <str name="facet.field">back_div1_div2_div3_sp_speaker_sim</str>
-			
-			<str name="facet.field">term_sim</str>
-			<str name="facet.field">body_div1_div2_p_term_sim</str>
-			<str name="facet.field">body_div1_div2_div3_p_term_sim</str>
-			<str name="facet.field">back_div1_div2_p_term_sim</str>
-			<str name="facet.field">term_hi_sim</str>
-			<str name="facet.field">body_div1_div2_p_term_hi_sim</str>
-			<str name="facet.field">back_div1_div2_p_term_hi_sim</str>
-			
 			<str name="facet.field">trailer_sim</str>
 			<str name="facet.field">body_div1_div2_div3_trailer_sim</str>
 			<str name="facet.field">back_div1_trailer_sim</str>
 			<str name="facet.field">back_div1_div2_trailer_sim</str>
 
 			<str name="facet.field">teiHeader_fileDesc_titleStmt_author_sim</str>
-			<str name="facet.field">front_titlePage_docAuthor_name_sim</str>
-    </lst>
+			<str name="facet.field">front_titlePage_docAuthor_name_sim</str>    
+		</lst>
   </requestHandler>
 
   <requestHandler name="/update" class="solr.UpdateRequestHandler" startup="lazy" />
