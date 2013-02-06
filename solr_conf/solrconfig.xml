@@ -207,7 +207,6 @@
 			<str name="facet.field">note_sim</str>
 			<str name="facet.field">note_place_sim</str>
 			<str name="facet.field">note_type_sim</str>
-			<str name="facet.field">note_note_sim</str>
 			<str name="facet.field">body_div1_note_sim</str>
 			<str name="facet.field">body_div1_sp_p_note_sim</str>
 			<str name="facet.field">body_div1_div2_note_sim</str>
@@ -310,7 +309,6 @@
       <str name="facet.field">date_value_sim</str>
 
 			<str name="facet.field">note_sim</str>
-			<str name="facet.field">note_note_sim</str>
 			<str name="facet.field">note_place_sim</str>
 			<str name="facet.field">note_type_sim</str>
 			<str name="facet.field">body_div1_note_sim</str>

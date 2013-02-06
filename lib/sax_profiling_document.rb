@@ -51,7 +51,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
       if snode.buffer == NO_BUFFER
         snode.buffer = chars.dup
       else
-        snode.buffer << ' ' + chars.dup
+        snode.buffer << (@element_just_ended ? ' ' : '') + chars.dup
       end
     }
   end
@@ -92,6 +92,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
         suffix = "_#{sname}" + suffix
       }
     end
+    @element_just_ended = true
   end
   
   # @param [String] message contains the warning
