@@ -79,7 +79,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     text = node.buffer
     # add buffer to values for THIS node
     if text != NO_BUFFER
-      node.values << text.strip.gsub(/\s+/, ' ') unless text.strip.gsub(/\s+/, ' ').size <= 1
+      node.values << text.strip.gsub!(/\s+/, ' ') unless text.strip.gsub(/\s+/, ' ').size <= 1
     end
     unless node.values.empty?
       # write to doc_hash for THIS node
