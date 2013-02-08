@@ -1,8 +1,13 @@
 # Settings for Archives Parlementaires
 # You will want to copy this file and change the following settings:
-# 1. log_name
-# 2. default_set
-# 3. coll_fld_val  (at bottom)
+# 1. coll_fld_val
+# 2. log_name
+# 3. default_set
+# 4. blacklist or whitelist if you are using them
+
+# the value of the "collection" field in the Solr document (a way to query this OAI harvest only)
+# default is the default_set
+coll_fld_val: archives
 
 # log_dir:  directory for log file  (default logs, relative to harvestdor gem path)
 log_dir: logs  
@@ -16,12 +21,26 @@ purl: http://purl.stanford.edu
 # stacks: base url for the digital stacks (no trailing slash)
 stacks: https://stacks.stanford.edu
 
+# ---------- White and Black list parameters -----
+
+# name of file containing druids that will NOT be profiled even if they are harvested via OAI
+#  either give absolute directory, or directory relative to where the command will be executed
+#blacklist: config/bnf_images_w_old_mods_druids.txt
+
+# name of file containing druids that WILL be profiled (all others will be ignored)
+#  either give absolute directory, or directory relative to where the command will be executed
+#whitelist: config/ap_whitelist.txt
+
 # ---------- OAI harvesting parameters -----------
 
 # oai_client_debug:  true for OAI::Client debug mode  (default: false)
 
 # oai_repository_url:  URL of the OAI data provider
 oai_repository_url: https://dor-oaiprovider-prod.stanford.edu/oai
+
+# default_set:  default set for harvest  (default: nil)
+#   can be overridden on calls to harvest_ids and harvest_records
+default_set: is_governed_by_hy787xj5878
 
 # default_metadata_prefix:  default metadata prefix to be used for harvesting  (default: mods)
 #   can be overridden on calls to harvest_ids and harvest_records
@@ -31,10 +50,6 @@ oai_repository_url: https://dor-oaiprovider-prod.stanford.edu/oai
 
 # default_until_date:  default until date for harvest  (default: nil)
 #   can be overridden on calls to harvest_ids and harvest_records
-
-# default_set:  default set for harvest  (default: nil)
-#   can be overridden on calls to harvest_ids and harvest_records
-default_set: is_governed_by_hy787xj5878
 
 # Additional options to pass to Faraday http client (https://github.com/technoweenie/faraday)
 http_options:
@@ -49,7 +64,3 @@ solr:
 #  url: http://localhost:8080/solr/sax_profiler
   read_timeout: 500
   open_timeout: 500
-
-# the value of the "collection" field in the Solr document (a way to query this OAI harvest only)
-# default is the default_set
-coll_fld_val: archives
