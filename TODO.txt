@@ -1,0 +1,6 @@
+track parent div *types*  (div2_session_head  etc.)
+
+what is in body vs. back
+
+when is div1 repeated in doc?
+
