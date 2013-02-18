@@ -3,7 +3,6 @@ source "http://sul-gems.stanford.edu"
 
 # sul-gems
 gem 'harvestdor'
-gem 'stanford-mods'
 
 gem 'nokogiri'
 gem 'rake'
