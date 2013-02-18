@@ -42,18 +42,23 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     # current node
     node = @stack.last
     if @ignore_elements.include?(node.name)
-      chars = ""
+      chars = ''
     else
-      chars = data.strip.gsub(/\s+/, ' ')
+      chars = data.gsub(/\s+/, ' ')
     end
     # add chars to node buffer for stack
-    @stack.reverse.each { |snode|  
-      if snode.buffer == NO_BUFFER
-        snode.buffer = chars.dup
-      else
-        snode.buffer << (@element_just_ended ? ' ' : '') + chars.dup
-      end
-    }
+    unless chars.empty?
+      @stack.reverse.each { |snode|  
+        if snode.buffer == NO_BUFFER
+          snode.buffer = chars.dup
+        else
+          snode.buffer << (@element_just_ended || @element_just_started ? ' ' : '') + chars.dup
+        end
+        snode.buffer.gsub!(/\s+/, ' ') if snode.buffer && snode.buffer != NO_BUFFER    
+      }
+    end
+    @element_just_started = false
+    @element_just_ended = false
   end
   alias cdata_block characters
   
@@ -71,6 +76,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
         end
       }
     end
+    @element_just_started = true
   end
   
   # @param [String] name the element tag
@@ -79,7 +85,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     text = node.buffer
     # add buffer to values for THIS node
     if text != NO_BUFFER
-      node.values << text.strip.gsub!(/\s+/, ' ') unless text.strip.gsub(/\s+/, ' ').size <= 1
+      node.values << text.strip.gsub(/\s+/, ' ') unless text.strip.gsub(/\s+/, ' ').size <= 1
     end
     unless node.values.empty?
       # write to doc_hash for THIS node
@@ -139,4 +145,4 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     names
   end
 
-end # ApTeiDocument class
+end # SaxProfilingDocument class
