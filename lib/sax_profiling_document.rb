@@ -52,7 +52,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
         if snode.buffer == NO_BUFFER
           snode.buffer = chars.dup
         else
-          snode.buffer << (@element_just_ended || @element_just_started ? ' ' : '') + chars.dup
+          snode.buffer << (@element_just_started || @element_just_ended ? ' ' : '') + chars.dup
         end
         snode.buffer.gsub!(/\s+/, ' ') if snode.buffer && snode.buffer != NO_BUFFER    
       }
