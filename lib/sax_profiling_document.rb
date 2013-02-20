@@ -42,7 +42,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
     # current node
     node = @stack.last
     if @ignore_elements.include?(node.name)
-      chars = ''
+      chars = ""
     else
       chars = data.gsub(/\s+/, ' ')
     end
@@ -54,7 +54,7 @@ class SaxProfilingDocument < Nokogiri::XML::SAX::Document
         else
           snode.buffer << (@element_just_started || @element_just_ended ? ' ' : '') + chars.dup
         end
-        snode.buffer.gsub!(/\s+/, ' ') if snode.buffer && snode.buffer != NO_BUFFER    
+        snode.buffer.gsub!(/\s+/, ' ') if snode.buffer != NO_BUFFER
       }
     end
     @element_just_started = false
